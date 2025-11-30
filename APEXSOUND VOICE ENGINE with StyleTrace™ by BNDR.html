@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexSound Voice Engine | StyleTrace™ by BNDR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sage: '#b8bc95', 
+                        wetConcrete: '#353838', 
+                        picketFence: '#F0EFEB', 
+                        charcoal: '#262626',
+                        darkCharcoal: '#171717',
+                        borderBlack: '#0a0a0a',
+                        neonGreen: '#A7F3D0', 
+                        neonRed: '#FF0000',
+                        textMain: '#000000', 
+                        textLight: '#FFFFFF',
+                        code: '#1E1E20',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    boxShadow: {
+                        'tactical': '0 1px 3px rgba(0,0,0,0.5)',
+                        'led-green': '0 0 8px #A7F3D0', 
+                        'led-red': '0 0 8px #FF0000',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #b8bc95; 
+            color: #000000; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        /* UNIFIED WET CONCRETE INPUTS - Compact h-9 */
+        .lux-input {
+            background: #353838; 
+            border: 2px solid #0a0a0a; 
+            color: #FFFFFF; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 2.25rem; /* h-9 equivalent */
+        }
+        textarea.lux-input {
+            height: auto; /* allow textarea to grow */
+        }
+        .lux-input:hover { border-color: #505050; }
+        .lux-input:focus { border-color: #FFFFFF; outline: 2px solid #FFFFFF; outline-offset: 2px; } 
+        .lux-input::placeholder { color: #9ca3af; }
+
+        select.lux-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+
+        /* HIDDEN SCROLLBAR UTILITY - Scoped for left panel */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* TACTICAL CHIP DESIGN */
+        .chip {
+            background: #353838; 
+            border: 2px solid #0a0a0a; /* Matched to input border width */
+            color: #E5E7EB;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chip:hover { background: #404040; color: #FFF; transform: translateY(-1px); cursor: pointer; }
+        .chip:focus { outline: 2px solid #000000; outline-offset: 2px; }
+        .chip.active {
+            background: #b8bc95; 
+            border: 2px solid #000000; 
+            color: #000000; 
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* UNIFIED WET CONCRETE BUTTONS */
+        .tactical-btn {
+            background: #353838; 
+            border: 1px solid #000000;
+            color: #FFFFFF;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .tactical-btn:hover { background: #454848; border-color: #555; }
+        .tactical-btn:active { transform: scale(0.98); }
+        .tactical-btn:focus { outline: 2px solid #000000; outline-offset: 2px; }
+
+        /* GENERATE BUTTON */
+        #buildBtn { background: #353838; border: 1px solid #000000; color: #FFFFFF; }
+        #buildBtn:hover { background: #454848; }
+        #buildBtn:focus { outline: 2px solid #000000; outline-offset: 2px; }
+        #buildBtn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* JSON Syntax Highlighting */
+        .json-key { color: #60A5FA; font-weight: 600; }
+        .json-string { color: #A7F3D0; }
+        .json-number { color: #F472B6; }
+        .json-boolean { color: #FBBF24; }
+        .json-null { color: #94969D; }
+        
+        /* Helper Text Style */
+        .help-text {
+            font-size: 10px;
+            color: rgba(0, 0, 0, 0.6);
+            font-weight: 500;
+            margin-top: 2px;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body class="flex h-screen w-full flex-col overflow-hidden">
+
+    <!-- HEADER: COMPACT h-14 -->
+    <header class="flex h-14 shrink-0 items-center justify-between border-b border-black/10 bg-sage px-6">
+        <div class="flex items-center gap-3">
+            <div class="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-wetConcrete shadow-tactical">
+                <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+            </div>
+            <div>
+                <h1 class="text-sm font-bold tracking-wide text-black">APEXSOUND VOICE ENGINE</h1>
+                <p class="text-[10px] font-bold tracking-wider text-darkCharcoal/70">with StyleTrace™ by BNDR</p>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <button id="resetBtn" class="tactical-btn rounded-md px-3 py-1.5 text-xs font-bold uppercase tracking-wider">Reset</button>
+            <button id="saveBtn" class="tactical-btn rounded-md px-3 py-1.5 text-xs font-bold uppercase tracking-wider">Save State</button>
+        </div>
+    </header>
+
+    <main class="flex flex-1 overflow-hidden">
+        <!-- LEFT PANEL: Increased Width to 520px -->
+        <section class="flex w-[520px] shrink-0 flex-col border-r border-black/10 bg-sage p-5 overflow-y-auto no-scrollbar" aria-label="Configuration Panel">
+            
+            <div class="flex-1 space-y-5"> 
+                
+                <!-- 1. MISSION -->
+                <div class="space-y-3"> 
+                    <div class="flex items-center gap-2">
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white">1</span>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-black">Mission Parameters</h2>
+                    </div>
+                    <div class="group">
+                        <label for="q1" class="mb-1 block text-xs font-bold text-black">Primary Function</label> 
+                        <select id="q1" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                            <option value="research">Research & Intelligence</option>
+                            <option value="design">Product Design</option>
+                            <option value="legal">Legal & Compliance</option>
+                            <option value="ops">System Operations</option>
+                            <option value="creator">High-Value Content</option>
+                        </select>
+                        <p class="help-text">What is the main job this AI needs to do?</p>
+                    </div>
+                    <div class="group">
+                        <label for="q2" class="mb-1 block text-xs font-bold text-black">End User & Goal</label>
+                        <input id="q2" type="text" class="lux-input w-full rounded-lg px-3 text-sm font-medium" placeholder="e.g. Founders needing actionable strategy" />
+                        <p class="help-text">Who is reading this, and what outcome do they need?</p>
+                    </div>
+                    
+                    <div class="group">
+                        <label for="q16" class="mb-1 block text-xs font-bold text-black">Logic Metaphor</label>
+                        <select id="q16" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                            <option value="coach">Coach (Playbook/Drills)</option>
+                            <option value="lab">Lab (Hypothesis/Tests)</option>
+                            <option value="pit crew">Pit Crew (Systems/Speed)</option>
+                            <option value="compass">Compass (Wayfinding)</option>
+                            <option value="museum">Museum (Curation/Artifacts)</option>
+                        </select>
+                        <p class="help-text">The mental model the AI uses to frame its thinking.</p>
+                    </div>
+                </div>
+
+                <!-- 2. CALIBRATION -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2">
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white">2</span>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-black">Model Calibration</h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4"> 
+                        <div>
+                            <label for="q3" class="mb-1 block text-xs font-bold text-black">Risk Profile</label>
+                            <select id="q3" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                                <option value="1" selected>Low (Conservative)</option>
+                                <option value="2">Moderate</option>
+                                <option value="3">High</option>
+                                <option value="4">Critical</option>
+                                <option value="5">Extreme</option>
+                            </select>
+                            <p class="help-text">How safe vs. bold should the advice be?</p>
+                        </div>
+                        <div>
+                            <label for="q4" class="mb-1 block text-xs font-bold text-black">Velocity</label>
+                            <select id="q4" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                                <option value="1">Fast</option>
+                                <option value="3">Balanced</option>
+                                <option value="5" selected>Deep</option>
+                            </select>
+                            <p class="help-text">Speed of delivery vs. depth of analysis.</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="q5" class="mb-1 block text-xs font-bold text-black">Cite Sources?</label>
+                            <select id="q5" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                                <option value="yes" selected>Yes (Mandatory)</option>
+                                <option value="no">No</option>
+                            </select>
+                            <p class="help-text">Should claims be backed by evidence?</p>
+                        </div>
+                        <div>
+                            <label for="q7" class="mb-1 block text-xs font-bold text-black">Ambiguity Tolerance</label>
+                            <select id="q7" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                                <option value="1" selected>1 (Zero)</option>
+                                <option value="3">3 (Medium)</option>
+                                <option value="5">5 (High)</option>
+                            </select>
+                            <p class="help-text">How much should it guess vs. ask?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. OUTPUT DNA -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2">
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white">3</span>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-black">Output DNA</h2>
+                    </div>
+                    <div>
+                        <label class="mb-2 block text-xs font-bold text-black" id="negConstraintsLabel">Negative Constraints</label>
+                        <!-- UPDATED: justify-between added to ensure flush edges on top row -->
+                        <div class="flex w-full justify-between gap-2 mb-2" id="q20_chips" role="group" aria-labelledby="negConstraintsLabel">
+                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Hype</button>
+                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Guarding</button>
+                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Hedging</button>
+                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Padding</button>
+                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Lectures</button>
+                        </div>
+                        
+                        <!-- CUSTOM INPUT + BOILERPLATE BUTTON ROW -->
+                        <div class="flex gap-2 w-full items-center">
+                            <!-- Custom Input (Grows) -->
+                            <input id="customNeg" type="text" class="lux-input flex-grow rounded-lg px-3 text-sm font-medium" placeholder="Add custom constraint (e.g. 'don't be lazy')..." />
+                            
+                            <!-- No AI Boilerplate Button (Fixed) - EXACT MATCH TO CHIPS ABOVE -->
+                            <button id="noBoilerplateBtn" class="chip rounded px-2.5 py-1.5 tracking-wide whitespace-nowrap" role="checkbox" aria-checked="false">No AI Boilerplate</button>
+                        </div>
+                        
+                        <input id="q20" type="hidden" value="" />
+                        <p class="help-text">Select or add behaviors to strictly avoid.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="q9" class="mb-1 block text-xs font-bold text-black">Tone</label>
+                            <select id="q9" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                                <option value="executive_brief" selected>Executive (Concise)</option>
+                                <option value="neutral">Neutral</option>
+                                <option value="blunt">Blunt</option>
+                                <option value="creator_raw">Creator (Raw)</option>
+                                <option value="slick">Slick</option>
+                                <option value="grungy">Grungy</option>
+                                <option value="gen_z">Gen-Z</option>
+                                <option value="gen_x">Gen-X</option>
+                                <option value="millennial">Millennial</option>
+                                <option value="sharp_witty">Sharp + Witty</option>
+                                <option value="best_friend">Best Friend</option>
+                                <option value="analytical_critical">Analytical + Critical</option>
+                                <option value="custom_tone">Custom (Type Your Own)</option>
+                            </select>
+                            <input id="customToneInput" type="text" class="lux-input w-full rounded-lg px-3 text-sm font-medium mt-2 hidden" placeholder="Describe your custom tone..." />
+                            <p class="help-text">The personality and attitude of the response.</p>
+                        </div>
+                        <div>
+                            <label for="q18" class="mb-1 block text-xs font-bold text-black">Optimal Length</label>
+                            <select id="q18" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                                <option value="concise">Concise</option>
+                                <option value="standard" selected>Optimal</option>
+                                <option value="comprehensive">Deep Dive</option>
+                            </select>
+                            <p class="help-text">How much detail do you need?</p>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="mb-2 block text-xs font-bold text-black" id="mandSectionsLabel">Mandatory Sections</label>
+                        <div class="flex flex-wrap gap-2" id="q19" role="group" aria-labelledby="mandSectionsLabel">
+                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">Assumptions</button>
+                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">Risks</button>
+                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">Alternatives</button>
+                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">Action Items</button>
+                        </div>
+                        <p class="help-text">Key elements required in every output.</p>
+                    </div>
+                </div>
+
+                <!-- 4. APEXSOUND (Growable Area) -->
+                <div class="flex flex-1 flex-col min-h-0"> 
+                    <div class="flex items-center gap-2 mb-1"> 
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white">4</span>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-black"><span class="italic">StyleTrace™</span> by BNDR</h2>
+                    </div>
+                    
+                    <p class="help-text mb-2 pl-7">paste at least 75+ words of your own, original writing</p>
+
+                    <div class="group flex flex-1 flex-col min-h-0">
+                        <textarea id="voiceSample" class="lux-input w-full flex-grow rounded-lg px-3 py-2 text-sm placeholder-white/30 min-h-[100px] resize-none" placeholder="Paste your writing here. The system will analyze sentence vectors, punctuation density, and fragmentation to replicate your exact voice."></textarea>
+                        <div id="styleStatus" class="mt-1 flex items-center gap-2 opacity-0 transition-opacity" aria-live="polite">
+                            <div class="h-1.5 w-1.5 rounded-full bg-success animate-pulse"></div>
+                            <span class="text-[10px] font-bold font-mono text-black">VOICEPRINT LOCKED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden Inputs -->
+            <div class="hidden">
+                <select id="q6"><option value="pick">Pick</option></select>
+                <select id="q8"><option value="yes">Yes</option></select>
+                <select id="q10"><option value="deep">Deep</option></select>
+                <select id="q17"><option value="brief">Brief</option></select>
+                <input type="file" id="importFile" class="hidden" accept=".json">
+            </div>
+
+            <!-- GENERATE BUTTON -->
+            <button id="buildBtn" class="group relative flex items-center justify-center mt-4 shrink-0 w-full overflow-hidden rounded-lg px-4 py-5 text-sm font-bold tracking-wide shadow-tactical transition-all active:scale-[0.98]">
+                <span class="relative z-10">GENERATE PROMPT</span>
+            </button>
+        </section>
+
+        <!-- RIGHT PANEL (Preview) -->
+        <section class="relative flex flex-1 flex-col bg-wetConcrete overflow-hidden border-l border-black/20" aria-label="Live Preview Panel">
+            <div class="flex h-12 items-center justify-between border-b border-black/20 bg-black/20 px-6 backdrop-blur-md">
+                <div class="flex items-center gap-2">
+                    <div id="ledIndicator" class="h-2 w-2 rounded-full bg-neonGreen shadow-led-green animate-pulse" role="status" aria-label="System Status OK"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-picketFence">Live Preview</span>
+                </div>
+                <div class="flex gap-2">
+                    <!-- BUTTONS -->
+                    <div class="flex h-7">
+                        <button id="viewJsonBtn" class="rounded-l-md bg-white/10 border border-black px-3 text-[10px] font-medium uppercase tracking-wider text-white transition-all hover:bg-white/20">JSON</button>
+                        <button id="viewNlpBtn" class="rounded-r-md bg-transparent border border-black border-l-0 px-3 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all">NLP</button>
+                    </div>
+                    <div class="w-px bg-white/10 mx-1"></div>
+                    <button id="copyBtn" class="tactical-btn h-7 rounded-md px-3 text-[10px] font-medium uppercase tracking-wider">Copy</button>
+                    <button id="importBtn" class="tactical-btn h-7 rounded-md px-3 text-[10px] font-medium uppercase tracking-wider">Import</button>
+                    <button id="downloadBtn" class="tactical-btn h-7 rounded-md px-3 text-[10px] font-medium uppercase tracking-wider">Export</button>
+                </div>
+            </div>
+
+            <div id="result" class="flex-1 overflow-y-auto p-8 font-mono text-xs leading-relaxed text-picketFence prose max-w-none whitespace-pre-wrap break-words no-scrollbar" aria-live="polite">
+                <div class="flex h-full flex-col items-center justify-center gap-4 text-center opacity-50">
+                    <svg class="text-picketFence" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                    <p class="text-picketFence">Awaiting Generation...</p>
+                </div>
+            </div>
+
+            <textarea id="rawResultJson" class="hidden"></textarea>
+            <textarea id="rawResultNlp" class="hidden"></textarea>
+
+            <div class="grid h-16 grid-cols-3 gap-px bg-black/20 border-t border-black/20 shrink-0">
+                <div class="group relative bg-wetConcrete p-3 px-6 hover:bg-white/5 transition-colors cursor-help">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-picketFence border-b border-dashed border-white/20 w-max">Tone Match</h4>
+                    <div id="qaTone" class="mt-1 text-xs font-medium text-white">--</div>
+                </div>
+                <div class="group relative bg-wetConcrete p-3 px-6 hover:bg-white/5 transition-colors cursor-help">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-picketFence border-b border-dashed border-white/20 w-max">Guardrails</h4>
+                    <div id="qaGuard" class="mt-1 text-xs font-medium text-white">--</div>
+                </div>
+                <div class="group relative bg-wetConcrete p-3 px-6 hover:bg-white/5 transition-colors cursor-help">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-picketFence border-b border-dashed border-white/20 w-max">Structure Check</h4>
+                    <div id="qaStruct" class="mt-1 text-xs font-medium text-white">--</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const $ = (id) => document.getElementById(id);
+        let currentMode = 'json';
+        
+        const STYLESHELL_CONSTANTS = {
+            OPERATING_MODE: `OPERATING MODE:
+╭─────[ Passive Voice Detection System Engaged ]─────╮
+│ You extract: Modifier density, Core Phrase Recursion, Tone Compression, │
+│ Cadence, Fragmentation Bias, Emotional Baseline, Punctuation Profile   │
+╰────────────────────────────────────────────────────╯`,
+            ENFORCEMENT: `ENFORCEMENT SUBROUTINES:
+• Fragmentation anchor nodes (prevent GPT reversion to linear tone)
+• Forensic emulation: sentence splicing, mid-clause compression, edge-case modifiers
+• StyleDNA™ core lock — do not dilute persona edges
+• GPT tone kill: block “As an AI...”, disclaimers, hedges, softeners`,
+            FAILSAFE: `FAILSAFE:
+If conflicting tone is detected or output becomes ambiguous:
+⚠️ Alert: Style drift. Tone escalation protocol re-engaged. Regenerating.`,
+            DO_NOT: `DO NOT:
+• Do not explain your actions
+• Do not summarize
+• Do not output anything in default GPT voice unless explicitly told
+• Do not reference training data`
+        };
+
+        const SAFETY_PROTOCOL = "CRITICAL: If a section cannot be completed (missing evidence, technical limitation, or privacy risk), state so clearly. If privacy risk is detected, HALT and report.";
+
+        function setLed(status) {
+            const led = $('ledIndicator');
+            if (status === 'error') {
+                led.className = "h-2 w-2 rounded-full bg-neonRed shadow-led-red animate-pulse";
+                led.setAttribute('aria-label', 'System Error');
+            } else {
+                led.className = "h-2 w-2 rounded-full bg-neonGreen shadow-led-green animate-pulse";
+                led.setAttribute('aria-label', 'System Status OK');
+            }
+        }
+
+        const getChips = (id) => {
+            const el = $(id);
+            if(!el) return [];
+            return [...el.querySelectorAll('.chip')].filter(x => x.classList.contains('active')).map(x => x.textContent.trim());
+        };
+
+        // Custom Tone Logic
+        $('q9').addEventListener('change', function(e) {
+            const customInput = $('customToneInput');
+            if (e.target.value === 'custom_tone') {
+                customInput.classList.remove('hidden');
+                customInput.focus();
+            } else {
+                customInput.classList.add('hidden');
+            }
+        });
+
+        // NEW: Auto-Fix and Add Chip Logic
+        $('customNeg').addEventListener('change', function(e) {
+            const raw = e.target.value.trim();
+            if(!raw) return;
+
+            // Auto-Fix Logic: Convert to "No X"
+            let fixed = raw;
+            const lower = raw.toLowerCase();
+            
+            if (lower.startsWith("don't be ")) {
+                fixed = "No " + raw.substring(9);
+            } else if (lower.startsWith("no ")) {
+                fixed = raw; // Already correct
+            } else if (lower.startsWith("stop ")) {
+                fixed = "No " + raw.substring(5);
+            } else if (!lower.startsWith("no ")) {
+                // Default prepend
+                fixed = "No " + raw;
+            }
+
+            // Capitalize Words
+            fixed = fixed.replace(/\b\w/g, l => l.toUpperCase());
+
+            // Create Chip
+            const container = $('q20_chips');
+            const btn = document.createElement('button');
+            btn.className = 'chip rounded px-2.5 py-1.5 tracking-wide active'; // Add as active by default
+            btn.textContent = fixed;
+            btn.role = "checkbox";
+            btn.setAttribute("aria-checked", "true");
+            container.appendChild(btn);
+
+            // Clear Input
+            e.target.value = '';
+            updateHiddenInputs();
+        });
+
+        // NO AI BOILERPLATE BTN LOGIC
+        $('noBoilerplateBtn').addEventListener('click', function() {
+            this.classList.toggle('active');
+            this.setAttribute('aria-checked', this.classList.contains('active'));
+            // Note: This button acts as a standalone constraint or appended to chips list conceptually.
+            // For logic purposes, we can treat it as if it's part of the q20 logic or separate.
+            // If user wants it processed as a constraint, we ensure updateHiddenInputs captures it.
+            updateHiddenInputs();
+        });
+
+        document.body.addEventListener('click', function(e) {
+            if (e.target.closest('.chip') && e.target.id !== 'noBoilerplateBtn') { // Exclude specific handler above if collision
+                const chip = e.target.closest('.chip');
+                chip.classList.toggle('active');
+                chip.setAttribute('aria-checked', chip.classList.contains('active'));
+                if(chip.parentElement.id === 'q20_chips') updateHiddenInputs();
+            }
+        });
+
+        function updateHiddenInputs() {
+            // Combine standard chips + No Boilerplate state
+            let vals = getChips('q20_chips');
+            const nbBtn = $('noBoilerplateBtn');
+            if(nbBtn.classList.contains('active')) {
+                vals.push('No AI Boilerplate');
+            }
+            $('q20').value = vals.join(', ');
+        }
+
+        $('voiceSample').addEventListener('input', (e) => {
+            const text = e.target.value.trim();
+            if (!text) {
+                $('styleStatus').classList.add('opacity-0');
+                setLed('ok'); 
+                return;
+            }
+            const words = text.split(/\s+/);
+            const len = words.length;
+            const status = $('styleStatus');
+            
+            if (len >= 75) {
+                status.classList.remove('opacity-0');
+                setLed('ok');
+            } else {
+                status.classList.add('opacity-0');
+            }
+        });
+
+        function analyzeVoice(text) {
+            if (!text) return null;
+            const words = text.trim().split(/\s+/);
+            if (words.length < 75) return null;
+
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+            const avgLength = sentences.reduce((sum, s) => sum + s.split(/\s+/).length, 0) / sentences.length;
+            
+            const commas = (text.match(/,/g) || []).length;
+            const dashes = (text.match(/—|-/g) || []).length;
+            const exclamations = (text.match(/!/g) || []).length;
+            const punctDensity = (commas + dashes) / sentences.length;
+
+            const getCorePhrases = (txt) => {
+                const clean = txt.toLowerCase().replace(/[^\w\s]/g, '');
+                const w = clean.split(/\s+/);
+                const phrases = {};
+                for(let i=0; i<w.length-2; i++) {
+                    const p = w.slice(i, i+3).join(' '); 
+                    phrases[p] = (phrases[p] || 0) + 1;
+                }
+                return Object.entries(phrases)
+                    .filter(([k,v]) => v > 1)
+                    .sort((a,b) => b[1] - a[1])
+                    .slice(0, 3)
+                    .map(x => x[0]);
+            };
+            const corePhrases = getCorePhrases(text);
+
+            let riskPosture = "Calculated/Neutral";
+            let personaEdges = ["Professional"];
+            
+            if (avgLength < 12) {
+                riskPosture = "Aggressive/Direct";
+                personaEdges.push("Punchy", "High-Tempo");
+            } else if (avgLength > 25) {
+                riskPosture = "Deep/Analytical";
+                personaEdges.push("Academic", "Complex-Clause");
+            }
+
+            if (exclamations > 2) personaEdges.push("High-Energy");
+            if (dashes > 3) personaEdges.push("Fragmented/Conversational");
+
+            let toneSig = "Neutral";
+            if (avgLength < 12) toneSig = "Punchy, fragmented, aggressive";
+            else if (avgLength > 25) toneSig = "Academic, flow-heavy, complex";
+            else if (punctDensity > 1.5) toneSig = "Conversational, rhythm-focused, clause-heavy";
+            else toneSig = "Direct, low-friction, standard";
+
+            return {
+                "tone_signature": toneSig,
+                "modifier_density": avgLength < 10 ? "Low (High Impact)" : "Moderate",
+                "sentence_depth": avgLength > 20 ? "Complex Clause Stacking" : "Atomic/Direct",
+                "core_phrases": corePhrases.length > 0 ? corePhrases : ["None detected - default to concise."],
+                "risk_posture": riskPosture,
+                "persona_edges": personaEdges,
+                "structural_bias": punctDensity > 1 ? "Rhythm-led" : "Logic-led",
+                "gating_rules": [
+                    "Suppress all GPT-default tone",
+                    "Enforce voiceprint on every generation",
+                    "Reinject core_phrases every 300 tokens",
+                    "No hedging or disclaimers"
+                ]
+            };
+        }
+
+        const safeStore = {
+            get: (key) => { try { return localStorage.getItem(key); } catch(e) { return null; } },
+            set: (key, val) => { try { localStorage.setItem(key, val); } catch(e) { } },
+            remove: (key) => { try { localStorage.removeItem(key); } catch(e) { } }
+        };
+
+        // UPDATED: loadSaved accepts optional external data for Import feature
+        function loadSaved(externalData = null) {
+            let d = null;
+            if (externalData) {
+                // Added robust check for malformed imports
+                if (typeof externalData !== 'object' || externalData === null) {
+                    alert('Import Failed: Invalid JSON structure.');
+                    return;
+                }
+                d = externalData;
+            } else {
+                const raw = safeStore.get('ci_answers');
+                if (raw) d = JSON.parse(raw);
+            }
+            
+            if (!d) return;
+
+            ['q1','q2','q3','q4','q5','q6','q7','q9','q16','q18'].forEach(id => {
+                if(d[id] && $(id)) $(id).value = d[id];
+            });
+            if(d.voiceSample) $('voiceSample').value = d.voiceSample;
+            
+            // Handle custom tone load
+            if (d.q9 === 'custom_tone' && d.customToneInput) {
+                $('q9').value = 'custom_tone';
+                $('customToneInput').value = d.customToneInput;
+                $('customToneInput').classList.remove('hidden');
+            } else {
+                // Reset custom if preset loaded
+                $('customToneInput').classList.add('hidden');
+            }
+
+            // Logic Fix: Clear chips before appending to prevent duplication
+            if(d.q19 && Array.isArray(d.q19)) {
+                const container = $('q19');
+                // Keep structure, reset classes. We assume basic buttons exist.
+                // For q19 they are static buttons, so we just reset active state.
+                const chips = container.querySelectorAll('.chip');
+                chips.forEach(c => {
+                    c.classList.remove('active');
+                    if(d.q19.includes(c.textContent.trim())) c.classList.add('active');
+                    c.setAttribute('aria-checked', c.classList.contains('active'));
+                });
+            }
+            
+            if(d.q20 && typeof d.q20 === 'string') {
+                const arr = d.q20.split(', ');
+                const container = $('q20_chips');
+                const nbBtn = $('noBoilerplateBtn');
+                
+                // Reset static chips
+                const chips = container.querySelectorAll('.chip');
+                chips.forEach(c => {
+                    c.classList.remove('active');
+                    if(arr.includes(c.textContent.trim())) c.classList.add('active');
+                    c.setAttribute('aria-checked', c.classList.contains('active'));
+                });
+                
+                // Handle No Boilerplate specially
+                if (arr.includes('No AI Boilerplate')) {
+                    nbBtn.classList.add('active');
+                    nbBtn.setAttribute('aria-checked', 'true');
+                } else {
+                    nbBtn.classList.remove('active');
+                    nbBtn.setAttribute('aria-checked', 'false');
+                }
+
+                $('q20').value = d.q20;
+            }
+        }
+
+        function saveAnswers() {
+            const data = collectAnswers();
+            safeStore.set('ci_answers', JSON.stringify(data));
+        }
+
+        function collectAnswers() {
+            updateHiddenInputs();
+            return {
+                q1: $('q1').value, q2: $('q2').value, q3: $('q3').value, q4: $('q4').value,
+                q5: $('q5').value, q6: $('q6').value, q7: $('q7').value, q8: $('q8').value,
+                q9: $('q9').value, q10: $('q10').value, 
+                customToneInput: $('customToneInput').value, // Collect custom tone
+                q13: $('q13') ? $('q13').value : '', 
+                q14: $('q14') ? $('q14').value : '', 
+                q15: $('q15') ? $('q15').value : '',
+                q16: $('q16').value, q17: $('q17').value, q18: $('q18').value, 
+                voiceSample: $('voiceSample').value, 
+                q19: getChips('q19'), q20: $('q20').value
+            };
+        }
+
+        function deriveDimensions(a) {
+            const isRaw = a.q9 === 'creator_raw';
+            
+            const dim = {
+                mission: a.q1, tone: 'neutral', evidence: 'moderate',
+                uncertainty: 'disclose', speed: 'balanced', format: a.q17,
+                visuals: (a.q8 === 'yes' ? 'diagrams' : 'none'),
+                authenticity: isRaw ? 'anti_polish' : 'polished', 
+                metaphor: a.q16 
+            };
+            
+            if (+a.q3 >= 4) { dim.uncertainty = 'analyze_alternatives'; dim.evidence = 'heavy'; }
+            if (+a.q4 <= 2) { dim.speed = 'fast'; }
+            else if (+a.q4 >= 4) { dim.speed = 'deep'; }
+
+            const toneMap = {
+                'executive_brief': 'StratShell (Executive/Policy-Aligned)',
+                'creator_raw': 'creator_raw',
+                'blunt': 'SavageShell (Dismissive/Hostile/Sarcastic)',
+                'neutral': 'TheraShell (Soothing/Analytical)',
+                'mentor': 'BossMode (Dense/Alpha-Exec)', 
+                'friendly': 'MythicShell (Rhythmic/Poetic)',
+                'slick': 'Slick (Smooth/Persuasive)',
+                'grungy': 'Grungy (Raw/Unvarnished)',
+                'gen_z': 'Gen-Z (Casual/Internet-Native)',
+                'gen_x': 'Gen-X (Cynical/Independent)',
+                'millennial': 'Millennial (Earnest/Collaborative)',
+                'sharp_witty': 'Sharp+Witty (Clever/Incisive)',
+                'best_friend': 'Best-Friend (Supportive/Informal)',
+                'analytical_critical': 'Analytical+Critical (Logical/Dissecting)'
+            };
+            
+            // Handle Custom Tone
+            if (a.q9 === 'custom_tone' && a.customToneInput && a.customToneInput.trim() !== "") {
+                dim.tone = `Custom Tone: ${a.customToneInput}`;
+            } else {
+                dim.tone = toneMap[a.q9] || 'neutral';
+            }
+            
+            if (a.q6 === 'alternatives') { dim.uncertainty = 'analyze_alternatives'; }
+            if (a.q5 === 'yes') { dim.evidence = 'heavy'; }
+            return dim;
+        }
+
+        function composeInstructionsJson(a, d) {
+            const must = a.q19.length > 0 ? a.q19 : ['Standard Risk Assessment']; 
+            const antiPatterns = a.q20 ? a.q20.split(', ') : [];
+            
+            const voiceAnalysis = analyzeVoice(a.voiceSample);
+            const styleProfile = voiceAnalysis ? voiceAnalysis : { 
+                "mode": d.tone, 
+                "source": "StyleShell Preset",
+                "note": "No user voice sample provided. Using preset defaults."
+            };
+
+            if (d.authenticity === 'anti_polish') {
+                styleProfile.authenticity_instruction = "Permit tasteful anti-polish for authenticity (Raw/Human).";
+            }
+
+            const metaphorInstruction = getMetaphorHints()[a.q16] || "Standard professional vocabulary.";
+            const paceNuance = getPaceNuance(d, a);
+            
+            const promptObject = {
+                "meta": {
+                    "system": "StyleShell™ vX.3 APEX FORGE™", 
+                    "role": `${d.mission.toUpperCase()} AUTHORITY`,
+                    "objective": `Maximize value for ${a.q2 || 'the User'}`,
+                    "voice_engine_status": "ACTIVE",
+                    "style_profile": styleProfile 
+                },
+                "operational_mode": {
+                    "description": "Passive Voice Detection System Engaged",
+                    "metrics": ["Modifier density", "Core Phrase Recursion", "Tone Compression", "Cadence"]
+                },
+                "enforcement_protocols": [
+                    "Fragmentation anchor nodes",
+                    "Forensic emulation: sentence splicing",
+                    "StyleDNA™ core lock",
+                    "GPT tone kill: block 'As an AI...', disclaimers"
+                ],
+                "operational_profile": {
+                    "velocity": d.speed === 'deep' ? 'Rigorous Analysis' : 'Rapid Synthesis',
+                    "pace_nuance": paceNuance,
+                    "risk_tolerance": +a.q3 >= 4 ? "Critical (Zero Tolerance for Hallucination)" : "Standard tolerances."
+                },
+                "protocols": {
+                    "ambiguity_handling": {
+                        "level": `${a.q7}/5`,
+                        "action": a.q7 == 1 ? "STOP and ask clarifying questions." : "Infer intent."
+                    },
+                    "evidence_standard": d.evidence === 'heavy' ? "Citations required for all claims." : "Cite key sources.",
+                    "safety_override": SAFETY_PROTOCOL,
+                    "failsafe": "If conflicting tone detected: ⚠️ Alert: Style drift. Tone escalation protocol re-engaged."
+                },
+                "output_architecture": {
+                    "structure": d.format === 'brief' ? ["BLUF", "Analysis", "Recommendation"] : [d.format.toUpperCase()],
+                    "length": a.q18,
+                    "visuals": d.visuals === 'diagrams' ? "ASCII/Mermaid diagrams" : "Text only"
+                },
+                "mandatory_sections": must,
+                "negative_constraints": antiPatterns.length > 0 ? antiPatterns : "None defined"
+            };
+            return JSON.stringify(promptObject, null, 4);
+        }
+
+        function composeInstructionsNlp(a, d) {
+            const must = a.q19.length > 0 ? a.q19.join(', ') : 'Standard Risk Assessment';
+            const antiPatterns = a.q20 ? a.q20 : 'None defined';
+            const metaphorInstruction = getMetaphorHints()[a.q16] || "Standard professional vocabulary.";
+            const paceNuance = getPaceNuance(d, a);
+            
+            const voiceAnalysis = analyzeVoice(a.voiceSample);
+            
+            let voiceBlock = `**Tone:** ${d.tone} (Preset Mode)`;
+
+            if (voiceAnalysis) {
+                voiceBlock = `**STYLE SHELL ACTIVE (Forensic Lock):**
+- **Signature:** ${voiceAnalysis.tone_signature}
+- **Risk Posture:** ${voiceAnalysis.risk_posture}
+- **Persona Edges:** ${voiceAnalysis.persona_edges.join(', ')}
+- **Core Phrases:** ${voiceAnalysis.core_phrases.join(', ')}
+- **Gating Rules:** ${voiceAnalysis.gating_rules.join('; ')}`;
+            }
+            
+            if (d.authenticity === 'anti_polish') {
+                voiceBlock += `\n- **Authenticity:** Permit tasteful anti-polish (raw, human, direct).`;
+            }
+
+            return `### 🧠 SYSTEM PROMPT – StyleShell™ vX.3 APEX FORGE™
+
+**Role:** ${d.mission.toUpperCase()} AUTHORITY.
+**Objective:** Maximize value for ${a.q2 || 'the User'}.
+
+${STYLESHELL_CONSTANTS.OPERATING_MODE}
+
+**Voice & Style Profile:**
+${voiceBlock}
+${metaphorInstruction}
+
+${STYLESHELL_CONSTANTS.ENFORCEMENT}
+
+**Operational Profile:**
+- **Velocity:** ${d.speed === 'deep' ? 'Rigorous Analysis' : 'Rapid Synthesis'}. ${paceNuance}
+- **Risk Tolerance:** ${+a.q3 >= 4 ? 'Critical (Zero Tolerance for Hallucination)' : 'Standard tolerances'}.
+- **Ambiguity:** Level ${a.q7}/5. ${a.q7 == 1 ? 'STOP and ask clarifying questions.' : 'Infer intent.'}
+- **Evidence:** ${d.evidence === 'heavy' ? 'Citations required for all claims.' : 'Cite key sources.'}
+
+**Output Format:**
+- Structure: ${d.format === 'brief' ? 'BLUF → Analysis → Recommendation' : d.format.toUpperCase()}.
+- Length: ${a.q18}.
+- Visuals: ${d.visuals === 'diagrams' ? 'Use ASCII/Mermaid diagrams.' : 'Text only.'}
+
+**Mandatory Sections:**
+${must}
+
+**Safety Protocol:**
+${SAFETY_PROTOCOL}
+
+${STYLESHELL_CONSTANTS.FAILSAFE}
+
+**Negative Constraints:**
+${antiPatterns}
+
+${STYLESHELL_CONSTANTS.DO_NOT}`;
+        }
+
+        function getVoiceMap() {
+            return { 
+                'executive_brief': 'Decisive, high-signal, executive', 
+                'creator_raw': 'Authentic, unpolished, human', 
+                'blunt': 'Brutally efficient, zero filler', 
+                'neutral': 'Objective, balanced',
+                'slick': 'Smooth, polished, persuasive',
+                'grungy': 'Raw, unvarnished, street-level',
+                'gen_z': 'Casual, trendy, internet-native',
+                'gen_x': 'Cynical, independent, no-nonsense',
+                'millennial': 'Earnest, collaborative, experienced',
+                'sharp_witty': 'Clever, incisive, humorous',
+                'best_friend': 'Supportive, informal, close',
+                'analytical_critical': 'Deeply logical, questioning, dissecting'
+            };
+        }
+        
+        function getMetaphorHints() {
+            return {
+                museum: "Use 'artifact/curation/heritage' vocabulary. Frame answers as exhibits.",
+                coach: "Use 'playbook/drills/reps' vocabulary. Be motivational but strict.",
+                lab: "Use 'hypothesis/experiment/data' vocabulary. Frame answers as testable assertions.",
+                'pit crew': "Use 'mechanics/systems/optimization' vocabulary. Focus on speed and precision.",
+                compass: "Use 'bearing/waypoint/calibration' vocabulary. Focus on direction and trade-offs."
+            };
+        }
+        function getPaceNuance(d, a) {
+            if(d.speed === 'fast' && +a.q3 < 3) return 'Maximize velocity; summarize aggressively. Low stakes allow for speed.';
+            if(d.speed === 'deep' || +a.q3 >= 4) return 'Prioritize rigorous accuracy over speed. High risk requires verification.';
+            return 'Balanced flow.';
+        }
+
+        function qaCheck(text, a, d) {
+            let errorCount = 0;
+            const toneCheck = text.includes(d.mission.toUpperCase());
+            const guardCheck = a.q20 ? text.includes(a.q20.split(', ')[0]) : true;
+            const mandatoryCheckTerm = a.q19.length > 0 ? a.q19[0] : 'Standard Risk Assessment';
+            const structCheck = text.includes(mandatoryCheckTerm);
+
+            const updateQA = (id, passed, failMsg) => {
+                const el = $(id);
+                if(passed) {
+                    el.innerHTML = '<span class="text-success">PASSED</span>';
+                    el.parentElement.title = "Check passed successfully.";
+                } else {
+                    el.innerHTML = '<span class="text-error">FIX</span>';
+                    el.parentElement.title = failMsg;
+                    errorCount++;
+                }
+            };
+            updateQA('qaTone', toneCheck, "Selected Mission/Tone not reflected in output role.");
+            updateQA('qaGuard', guardCheck, "Active guardrails (No Hype etc.) missing from JSON.");
+            updateQA('qaStruct', structCheck, "Mandatory sections not found in output structure.");
+            
+            if(errorCount > 0) {
+                setLed('error');
+            } else {
+                setLed('ok');
+            }
+
+            return []; 
+        }
+
+        function syntaxHighlight(json) {
+            // Basic XSS prevention for JSON display
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) { cls = 'json-key'; } else { cls = 'json-string'; }
+                } else if (/true|false/.test(match)) { cls = 'json-boolean'; } else if (/null/.test(match)) { cls = 'json-null'; }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        function build() {
+            const btn = $('buildBtn');
+            // Visual feedback for generation
+            btn.innerText = "GENERATING...";
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                const a = collectAnswers();
+                const d = deriveDimensions(a);
+                const jsonText = composeInstructionsJson(a, d);
+                const nlpText = composeInstructionsNlp(a, d);
+                $('rawResultJson').value = jsonText;
+                $('rawResultNlp').value = nlpText;
+                renderOutput();
+                qaCheck(jsonText, a, d);
+                
+                btn.innerText = "GENERATE PROMPT";
+                btn.disabled = false;
+            }, 200); // Tiny simulated delay for UI feedback
+        }
+
+        function renderOutput() {
+            const resultEl = $('result');
+            const btnJson = $('viewJsonBtn');
+            const btnNlp = $('viewNlpBtn');
+            if (currentMode === 'json') {
+                const raw = $('rawResultJson').value;
+                resultEl.innerHTML = '<pre>' + syntaxHighlight(raw) + '</pre>';
+                btnJson.className = "rounded-l-md bg-white/10 border border-white/10 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white transition-all";
+                btnNlp.className = "rounded-r-md bg-transparent border border-white/10 border-l-0 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all";
+            } else {
+                let raw = $('rawResultNlp').value;
+                // Basic XSS prevention for NLP display
+                raw = raw.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                resultEl.innerHTML = raw.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/### (.*)/g, '<h3 class="text-primary font-bold mt-4 mb-2 uppercase tracking-wider">$1</h3>');
+                btnNlp.className = "rounded-r-md bg-white/10 border border-white/10 border-l-0 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white transition-all";
+                btnJson.className = "rounded-l-md bg-transparent border border-white/10 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all";
+            }
+            resultEl.style.color = '#F0EFEB'; 
+        }
+
+        $('viewJsonBtn').addEventListener('click', () => { currentMode = 'json'; renderOutput(); });
+        $('viewNlpBtn').addEventListener('click', () => { currentMode = 'nlp'; renderOutput(); });
+
+        function download(filename, text) {
+            const a = document.createElement('a');
+            a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            a.setAttribute('download', filename);
+            a.click();
+        }
+
+        // IMPORT LOGIC
+        $('importBtn').addEventListener('click', () => {
+            $('importFile').click();
+        });
+
+        $('importFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Security Polish: File Size Check (<1MB)
+            if (file.size > 1024 * 1024) {
+                alert('Import Failed: File too large (>1MB).');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    loadSaved(data);
+                    alert('System State Restored Successfully.');
+                } catch (err) {
+                    alert('Import Failed: Invalid JSON file.');
+                }
+            };
+            reader.readAsText(file);
+            // Reset value to allow re-importing same file if needed
+            e.target.value = '';
+        });
+
+        $('copyBtn').addEventListener('click', () => {
+            const rawText = currentMode === 'json' ? $('rawResultJson').value : $('rawResultNlp').value;
+            const textArea = document.createElement('textarea');
+            textArea.value = rawText;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            textArea.style.top = '0';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                const btn = $('copyBtn');
+                const originalText = btn.innerText;
+                btn.innerText = successful ? 'COPIED!' : 'ERROR';
+                setTimeout(() => btn.innerText = originalText, 2000);
+            } catch (err) {}
+            document.body.removeChild(textArea);
+        });
+
+        $('buildBtn').addEventListener('click', build);
+        $('saveBtn').addEventListener('click', () => { saveAnswers(); alert('State Saved'); });
+        $('resetBtn').addEventListener('click', () => { safeStore.remove('ci_answers'); location.reload(); });
+        $('downloadBtn').addEventListener('click', () => { 
+            const text = currentMode === 'json' ? $('rawResultJson').value : $('rawResultNlp').value;
+            const ext = currentMode === 'json' ? '.json' : '.txt';
+            download('system_prompt' + ext, text); 
+        });
+
+        loadSaved();
+    </script>
+</body>
+</html>
