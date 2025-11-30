@@ -1,516 +1,356 @@
 # ApexSound Voice Engine with StyleTrace™
 
-**ApexSound Voice Engine** is an interactive system prompt builder that combines forensic voice analysis with AI behavior calibration.  It enables users to generate highly customized system prompts by defining mission parameters, model calibration settings, and voice fingerprinting through original writing samples.
+**ApexSound Voice Engine** is an interactive system prompt builder that combines voice forensics with AI behavior calibration.  Generate highly customized system prompts in seconds. 
 
-## 🎯 Overview
+## 🚀 Quick Links
 
-StyleTrace™ by BNDR is a proprietary voice analysis engine embedded within ApexSound. The system analyzes written samples (75+ words minimum) to extract linguistic patterns—sentence structure, punctuation density, cadence, modifier density, and core phrase recursion—then encodes these patterns into system prompts that enforce consistent voice and tone across AI outputs.
+**[→ Launch Live Demo](https://bndrbots.github.io/apexsound-voice-engine/)**
 
-**Current Version:** vX.3 APEX FORGE™
+---
 
-### Key Capabilities
+## 🎯 What It Does
 
-- **Mission Parameterization**: Define primary function, end user, and logical metaphor
-- **Model Calibration**: Control risk tolerance, velocity (speed vs. depth), evidence standards, and ambiguity handling
-- **Voice Fingerprinting**: Analyze original writing to extract tone signature, persona edges, and structural bias
-- **Output DNA Configuration**: Set negative constraints, tone profiles, mandatory sections, and length preferences
-- **Dual-Mode Export**: Generate prompts in JSON (structured) or NLP (narrative) formats
-- **State Management**: Save, import, and export system configurations
+Build enterprise-grade system prompts in 4 steps:
 
-## 📋 Table of Contents
+1. **Define your mission** — Role, audience, metaphor
+2. **Calibrate model behavior** — Risk tolerance, depth, evidence standards
+3. **Set output guardrails** — Tone, constraints, mandatory sections
+4. **Lock your voice** — Optional: paste your writing, StyleTrace™ analyzes it
 
-- [Features](#features)
-- [Getting Started](#getting-started)
-- [System Architecture](#system-architecture)
-- [Configuration Guide](#configuration-guide)
-- [Voice Analysis Engine](#voice-analysis-engine)
-- [Export Formats](#export-formats)
-- [Advanced Usage](#advanced-usage)
-- [Security & Safety](#security--safety)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
+**Result:** Production-ready system prompt in JSON or NLP format
 
-## ✨ Features
+---
 
-### 1. Four-Stage Configuration Pipeline
+## ✨ Key Features
 
-**Stage 1: Mission Parameters**
-- Primary Function (Research, Design, Legal, Operations, Content Creation)
-- End User & Goal specification
-- Logic Metaphor selection (Coach, Lab, Pit Crew, Compass, Museum)
+### 🎨 Mission Parameters
+- **Primary Function**: Research, Design, Legal, Operations, Content
+- **End User & Goal**: Define who reads this and what they need
+- **Logic Metaphor**: Coach, Lab, Pit Crew, Compass, or Museum framing
 
-**Stage 2: Model Calibration**
-- Risk Profile (1–5 scale, from Conservative to Extreme)
-- Velocity (Fast, Balanced, Deep)
-- Citation requirements (Yes/No)
-- Ambiguity Tolerance (1–5 scale)
+### ⚙️ Model Calibration
+- **Risk Profile** (1–5): Conservative → Extreme
+- **Velocity**: Fast analysis vs. deep rigor
+- **Citation Requirements**: Evidence-backed or contextual
+- **Ambiguity Tolerance** (1–5): Ask questions vs. infer intent
 
-**Stage 3: Output DNA**
-- Negative Constraints (No Hype, No Guarding, No Hedging, No Padding, No Lectures, custom additions, No AI Boilerplate)
-- Tone selection (12 presets + custom option)
-- Optimal Length (Concise, Standard, Deep Dive)
-- Mandatory Sections (Assumptions, Risks, Alternatives, Action Items)
+### 🔒 Output DNA
+- **Negative Constraints**: Pre-built chips (No Hype, No Hedging, No Boilerplate) + custom
+- **Tone Selection**: 12 presets (Executive, Blunt, Creator, Gen-Z, etc.) + custom
+- **Mandatory Sections**: Assumptions, Risks, Alternatives, Action Items
+- **Length Control**: Concise, Optimal, Deep Dive
 
-**Stage 4: StyleTrace™ Voice Fingerprinting**
-- Paste 75+ word writing sample
-- System auto-analyzes linguistic patterns
-- Generates forensic voice profile for tone enforcement
+### 🧬 StyleTrace™ Voice Engine
+Paste 75+ words of your writing.  The system analyzes it and locks your exact voice into the generated prompt—ensuring consistent tone, personality, and style across all AI outputs.
 
-### 2. Voice Analysis Engine
+**Why this matters**: Most system prompts sound generic. StyleTrace™ makes the AI sound *like you*.
 
-The StyleTrace™ system extracts:
-- **Tone Signature**: Detects punchy/fragmented, academic/complex, conversational, or direct patterns
-- **Modifier Density**: Measures word economy vs. descriptive language
-- **Sentence Depth**: Identifies atomic/direct vs. complex clause stacking
-- **Core Phrases**: Isolates recurring 3-word phrase clusters
-- **Risk Posture**: Calculates aggressive/direct vs. deep/analytical orientation
-- **Persona Edges**: Extracts personality markers (Punchy, High-Energy, Fragmented, etc.)
-- **Structural Bias**: Determines rhythm-led vs. logic-led composition
+### 📤 Dual-Mode Export
+- **JSON Mode**: Structured output for API integration
+- **NLP Mode**: Readable narrative for documentation
+- **Copy/Download**: Instant export or clipboard copy
+- **Import/Save**: Restore previous configurations
 
-### 3.  Dual-Mode Output
+### ✅ Real-Time QA Dashboard
+- **Tone Match**: Mission reflected in output?  ✓
+- **Guardrails**: Constraints enforced? ✓
+- **Structure Check**: Mandatory sections included? ✓
+- **LED Status**: Green (ready) or Red (fix)
 
-**JSON Mode**: Structured system prompt with metadata, operational profiles, enforcement protocols, and safety overrides. 
-
-**NLP Mode**: Narrative system prompt with markdown formatting, visual hierarchy, and human-readable sections.
-
-### 4. State Persistence
-
-- **Save State**: Stores all inputs to browser localStorage
-- **Export**: Download configurations as `. json` or `.txt`
-- **Import**: Restore saved configurations from file (max 1MB, JSON validation)
-- **Reset**: Clear all settings and reload
-
-### 5. Quality Assurance Dashboard
-
-Real-time QA checks monitor:
-- **Tone Match**: Verifies selected mission/tone reflected in output
-- **Guardrails**: Confirms active negative constraints encoded
-- **Structure Check**: Validates mandatory sections present
-- **LED Indicator**: Green (OK) or Red (Error) status light
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
 - Modern web browser (Chrome, Firefox, Safari, Edge)
 - JavaScript enabled
-- No dependencies or build steps required
+- No installation needed
 
-### Installation
+### Quick Start (5 minutes)
 
-1. Clone or download this repository
-2. Open `index. html` in your web browser
-3. Application runs entirely client-side (no backend required)
+1. **[Open the app](https://bndrbots. github.io/apexsound-voice-engine/)**
 
-### Quick Start
+2. **Left Panel — Configure (4 stages)**
+   ```
+   Stage 1: Mission
+   └─ Function: Choose your role
+   └─ Audience: Who reads this?
+   └─ Metaphor: Thinking style (Coach, Lab, etc.)
 
-1. **Set Mission Parameters**
-   - Select Primary Function (e.g., "Research & Intelligence")
-   - Enter End User & Goal (e.g., "Founders needing actionable strategy")
-   - Choose Logic Metaphor (e.g., "Coach")
+   Stage 2: Calibration
+   └─ Risk: How safe vs. bold? 
+   └─ Velocity: Speed vs. depth?
+   └─ Evidence: Citations required?
+   └─ Ambiguity: Ask or infer? 
 
-2. **Configure Model Calibration**
-   - Set Risk Profile (1–5)
-   - Choose Velocity (Fast/Balanced/Deep)
-   - Select citation requirements
-   - Set Ambiguity Tolerance
+   Stage 3: Output DNA
+   └─ Constraints: What to avoid?
+   └─ Tone: What personality?
+   └─ Sections: What must be included?
+   └─ Length: How detailed? 
 
-3.  **Define Output DNA**
-   - Select negative constraints (click chips to activate)
-   - Add custom constraints if needed
-   - Choose Tone (preset or custom)
-   - Select Mandatory Sections
-   - Choose Optimal Length
+   Stage 4: Voice (Optional)
+   └─ Paste 75+ words of your writing
+   └─ StyleTrace™ locks your voice
+   ```
 
-4. **Add Voice Sample (Optional)**
-   - Paste 75+ words of original writing
-   - System will lock voiceprint when threshold met
-   - StyleTrace™ analysis activates automatically
-
-5. **Generate Prompt**
+3. **Generate**
    - Click "GENERATE PROMPT"
-   - View live preview in JSON or NLP mode
-   - QA dashboard updates in real time
+   - Preview appears instantly
 
-6. **Export or Copy**
-   - Click "Copy" to copy to clipboard
-   - Click "Export" to download as file
-   - Click "Import" to restore previous configuration
+4. **Export**
+   - Copy to clipboard
+   - Download as JSON or TXT
+   - Import saved configurations
 
-## 🏗️ System Architecture
+---
+
+## 🏗️ Architecture
 
 ### Frontend Stack
-
-- **HTML5**: Semantic markup with ARIA accessibility attributes
-- **Tailwind CSS**: Utility-first styling with custom color palette
-- **Vanilla JavaScript**: No external dependencies
-- **Local Storage**: Browser-based state persistence
-
-### Component Structure
-
-```
-┌─────────────────────────────────────────────────┐
-│              HEADER (Navigation)                 │
-├──────────────────┬──────────────────────────────┤
-│                  │                              │
-│  Configuration   │      Live Preview Panel      │
-│   Panel (Left)   │      (Right)                 │
-│                  │                              │
-│  - Mission       │  - JSON/NLP Toggle           │
-│  - Calibration   │  - Real-time Output          │
-│  - Output DNA    │  - Copy/Import/Export        │
-│  - Voice Sample  │  - QA Dashboard              │
-│                  │                              │
-├──────────────────┴──────────────────────────────┤
-│     GENERATE BUTTON (Full Width)                │
-└─────────────────────────────────────────────────┘
-```
+- **HTML5** with ARIA accessibility
+- **Tailwind CSS** custom color palette
+- **Vanilla JavaScript** (no dependencies)
+- **Browser LocalStorage** for persistence
 
 ### Data Flow
+```
+Input → Analysis → Composition → QA Check → Output
+```
 
-1.  **Input Capture**: All form fields collected into `collectAnswers()` object
-2. **Dimension Derivation**: `deriveDimensions()` maps inputs to system parameters
-3. **Voice Analysis**: `analyzeVoice()` processes writing sample (if provided)
-4. **Composition**: `composeInstructionsJson()` or `composeInstructionsNlp()` generates output
-5. **Quality Assurance**: `qaCheck()` validates output against constraints
-6. **Rendering**: `renderOutput()` displays with syntax highlighting
-7. **Export**: Copy to clipboard, download as file, or import configuration
+- All processing happens **client-side** (your browser)
+- No backend, no servers, no data transmission
+- Settings stored locally on your machine
+- 100% privacy
 
-## ⚙️ Configuration Guide
+---
+
+## 📋 Configuration Guide
 
 ### Mission Parameters
 
-| Field | Options | Purpose |
-|-------|---------|---------|
-| Primary Function | Research & Intelligence, Product Design, Legal & Compliance, System Operations, High-Value Content | Defines role and expertise area |
-| End User & Goal | Free text | Specifies audience and desired outcome |
-| Logic Metaphor | Coach, Lab, Pit Crew, Compass, Museum | Sets vocabulary and framing pattern |
+| Field | Options |
+|-------|---------|
+| **Primary Function** | Research & Intelligence, Product Design, Legal & Compliance, System Operations, High-Value Content |
+| **End User & Goal** | Free text (e.g., "Founders needing actionable strategy") |
+| **Logic Metaphor** | Coach, Lab, Pit Crew, Compass, Museum |
 
 ### Model Calibration
 
-| Field | Range | Effect |
-|-------|-------|--------|
-| Risk Profile | 1 (Low/Conservative) – 5 (Extreme) | Influences safety tolerance, evidence requirements |
-| Velocity | 1 (Fast), 3 (Balanced), 5 (Deep) | Controls analysis depth vs. speed |
-| Cite Sources | Yes (Mandatory), No | Requires evidence backing for claims |
-| Ambiguity Tolerance | 1 (Zero), 3 (Medium), 5 (High) | Determines guessing vs. clarification behavior |
+| Field | Range | Meaning |
+|-------|-------|---------|
+| **Risk Profile** | 1–5 | 1 = Conservative, 5 = Extreme (affects safety thresholds) |
+| **Velocity** | Fast/Balanced/Deep | How much depth vs. speed |
+| **Cite Sources** | Yes/No | Require evidence for claims?  |
+| **Ambiguity Tolerance** | 1–5 | 1 = Ask clarifying questions, 5 = Infer intent |
 
 ### Output DNA
 
-**Negative Constraints**
-- Pre-defined chips: No Hype, No Guarding, No Hedging, No Padding, No Lectures
-- Custom constraints: Type and auto-format to "No X" pattern
-- No AI Boilerplate: Suppresses default AI disclaimers and hedging
+**Negative Constraints** (What NOT to do)
+- Pre-built: No Hype, No Guarding, No Hedging, No Padding, No Lectures, No AI Boilerplate
+- Custom: Type any behavior to avoid (auto-formats to "No X")
 
 **Tone Options**
-| Tone | Description |
-|------|-------------|
-| Executive (Concise) | Decisive, high-signal, policy-aligned |
-| Neutral | Objective, balanced, analytical |
-| Blunt | Brutally efficient, zero filler |
-| Creator (Raw) | Authentic, unpolished, human |
-| Slick | Smooth, polished, persuasive |
-| Grungy | Raw, unvarnished, street-level |
-| Gen-Z | Casual, trendy, internet-native |
-| Gen-X | Cynical, independent, no-nonsense |
-| Millennial | Earnest, collaborative, experienced |
-| Sharp + Witty | Clever, incisive, humorous |
-| Best Friend | Supportive, informal, close |
-| Analytical + Critical | Deeply logical, questioning, dissecting |
-| Custom | User-defined tone description |
+- Executive (Concise), Neutral, Blunt, Creator (Raw), Slick, Grungy
+- Gen-Z, Gen-X, Millennial, Sharp+Witty, Best Friend, Analytical+Critical
+- Custom (describe your own)
 
 **Mandatory Sections**
-- Assumptions
-- Risks
-- Alternatives
-- Action Items
+- Assumptions, Risks, Alternatives, Action Items (toggle any/all)
 
-## 🔬 Voice Analysis Engine
+**Length**
+- Concise, Optimal (default), Deep Dive
 
-### How StyleTrace™ Works
+### StyleTrace™ Voice Fingerprinting
 
-1. **Input Validation**: Accepts 75+ word samples minimum
-2. **Sentence Parsing**: Extracts all sentences (.  !  ?)
-3. **Metrics Calculation**:
-   - Average sentence length (word count)
-   - Punctuation density (commas, dashes per sentence)
-   - Exclamation frequency
-   - 3-word phrase clustering (core phrases with >1 occurrence)
+**How to Use:**
+1. Paste 75+ words of **your own writing** (email, article, proposal, etc.)
+2. System analyzes linguistic patterns
+3. When you hit 75 words: "VOICEPRINT LOCKED" appears
+4. Your voice profile embeds into the generated prompt
 
-4. **Profile Generation**:
-   - Tone Signature: Maps metrics to style categories
-   - Modifier Density: Low (high impact) if avg length < 10
-   - Sentence Depth: Atomic/Direct or Complex Clause Stacking
-   - Core Phrases: Top 3 recurring 3-word clusters
-   - Risk Posture: Aggressive/Direct or Deep/Analytical
-   - Persona Edges: Extracted attributes (Punchy, High-Energy, Fragmented, etc.)
-   - Structural Bias: Rhythm-led (punctuation > 1. 0 density) or Logic-led
+**What Gets Locked:**
+- Your tone signature
+- Sentence patterns
+- Vocabulary preferences
+- Energy level
+- Punctuation style
 
-5. **Output**: JSON object embedded in system prompt with forensic gating rules
+**Result:** Every generated prompt sounds like YOU, not generic AI. 
 
-### Minimum Requirements
-
-- **75+ words**: Required for voice fingerprinting
-- **Active Status Indicator**: "VOICEPRINT LOCKED" displays when threshold met
-- **Optional**: Sample can be left blank for preset tone mode
-
-### Limitations
-
-- Only analyzes text-based patterns (no audio input)
-- Does not process audio files
-- Cannot extract speaker identity
-- Treats all writing equally regardless of context
-- No personalization beyond linguistic metrics
+---
 
 ## 📤 Export Formats
 
 ### JSON Mode
+Professional, structured format for:
+- API integration
+- Version control
+- Data interchange
 
-**Structure**: Hierarchical object with sections:
-- `meta`: System name, role, objective, voice engine status, style profile
-- `operational_mode`: Voice detection description, metrics tracked
-- `enforcement_protocols`: Fragmentation anchors, forensic emulation, tone locks
-- `operational_profile`: Velocity, pace nuance, risk tolerance
-- `protocols`: Ambiguity handling, evidence standards, safety override, failsafe
-- `output_architecture`: Structure, length, visuals
-- `mandatory_sections`: Required output sections
-- `negative_constraints`: Prohibited behaviors
-
-**Syntax Highlighting**: 
-- Keys: Blue (#60A5FA)
-- Strings: Teal (#A7F3D0)
-- Numbers: Pink (#F472B6)
-- Booleans: Amber (#FBBF24)
-- Null: Gray (#94969D)
+**Includes:**
+- Metadata (role, objective, version)
+- Operational modes and protocols
+- Enforcement rules
+- Voice profile (if provided)
+- Safety protocols
 
 ### NLP Mode
+Human-readable markdown for:
+- Documentation
+- Sharing with teammates
+- Easy copying
 
-**Structure**: Markdown narrative with sections:
-- Role and objective statement
-- Operating mode description
-- Voice & style profile
-- Enforcement subroutines
-- Operational profile
-- Output format specifications
-- Mandatory sections
-- Safety protocol
-- Failsafe procedures
-- Negative constraints
-- Do-not rules
+**Includes:**
+- Narrative instructions
+- Bold emphasis and hierarchy
+- Markdown formatting
+- Same content, different presentation
 
-**Formatting**:
-- Markdown headers (###)
-- Bold emphasis (**text**)
-- Bullet points
-- Human-readable language
+### Export Options
+- **Copy**: Direct to clipboard
+- **Download**: As JSON or TXT file
+- **Import**: Restore from saved file
 
-### File Export
-
-**JSON Export**
-- Filename: `system_prompt. json`
-- Format: Pretty-printed (4-space indentation)
-- Use case: Direct API integration, version control
-
-**Text Export**
-- Filename: `system_prompt.txt`
-- Format: NLP narrative mode
-- Use case: Human reading, documentation
+---
 
 ## 🎓 Advanced Usage
 
 ### Custom Tone Creation
+1. Select "Custom (Type Your Own)" in Tone dropdown
+2. Input field appears
+3. Describe your tone (e.g., "Socratic, curious, question-focused")
+4. Your description embeds in the prompt
 
-1. Select "Custom (Type Your Own)" from Tone dropdown
-2. Input field appears below
-3. Enter tone description (e.g., "Socratic, question-focused, Socratic method")
-4. Description embedded in system prompt under "Custom Tone:"
+### Saving & Restoring Configurations
 
-### Negative Constraints with Auto-Fix
-
-**Input Patterns Recognized**:
-- "don't be X" → converts to "No X"
-- "stop X" → converts to "No X"
-- "no X" → preserved as-is
-- "X" (plain) → prepends "No " to become "No X"
-
-**Capitalization**: All words auto-capitalized for consistency
-
-**Chip Management**:
-- Click any constraint chip to toggle active/inactive state
-- Active chips appear highlighted (sage background, bold text)
-- Remove custom chips by deactivating in display
-
-### Import/Export Workflow
-
-**Save Current Config**
+**Save Current**
 ```
 1. Configure all parameters
 2. Click "Save State"
-3. Settings stored to browser localStorage
-4. Confirmation alert appears
+3.  Stored to browser (no account needed)
 ```
 
 **Export for Backup**
 ```
-1.  Click "Export"
-2. Choose JSON or Text format
-3. File downloads automatically
-4. Backup stored locally
+1. Click "Export"
+2. Choose JSON or TXT
+3. Download to your computer
 ```
 
 **Restore from File**
 ```
 1. Click "Import"
-2. Select previously exported . json file
-3. File validated for structure and size (<1MB)
-4. All settings restored
-5. Success confirmation displayed
+2. Select previously exported file
+3. All settings restored instantly
 ```
 
-### QA Dashboard Interpretation
+### QA Dashboard
 
-| Indicator | Status | Meaning | Action |
-|-----------|--------|---------|--------|
-| Tone Match | PASSED | Mission/tone encoded in output | None required |
-| Tone Match | FIX | Mission/tone missing from role | Regenerate or adjust mission |
-| Guardrails | PASSED | Negative constraints present | None required |
-| Guardrails | FIX | Constraints missing from JSON | Add constraints and regenerate |
-| Structure Check | PASSED | Mandatory sections found | None required |
-| Structure Check | FIX | Required sections absent | Select mandatory sections and regenerate |
+| Indicator | Meaning |
+|-----------|---------|
+| ✅ PASSED | Check successful, no action needed |
+| ⚠️ FIX | Check failed, regenerate after adjusting |
+| 🟢 Green LED | All systems go |
+| 🔴 Red LED | One or more checks failed |
 
-**LED Indicator**:
-- 🟢 Green + Pulse: All checks passing, system ready
-- 🔴 Red + Pulse: One or more QA checks failed, review output
+---
 
-## 🔐 Security & Safety
+## 🔐 Security & Privacy
 
-### Client-Side Architecture
+- ✅ **Client-side only**: All processing in your browser
+- ✅ **No backend**: No servers, no data transmission
+- ✅ **No accounts**: No sign-up, no passwords
+- ✅ **No tracking**: No analytics, no cookies
+- ✅ **Local storage**: Settings saved only on your machine
+- ✅ **Offline capable**: Works without internet (after load)
 
-- All processing occurs in browser (no data sent to servers)
-- No backend dependencies
-- No API calls or external network traffic
-- Settings stored only in browser localStorage
-
-### Safety Protocol
-
-**Active Safeguards**:
-- Privacy risk detection (configured to HALT if triggered)
-- Evidence requirement validation for high-risk profiles
-- Ambiguity clarification protocol (Level 1 = ask questions)
-- Failsafe tone escalation if drift detected
-
-**Protocol Statement** (embedded in output):
-```
-CRITICAL: If a section cannot be completed (missing evidence, technical 
-limitation, or privacy risk), state so clearly.  If privacy risk is detected, 
-HALT and report. 
-```
-
-### Import Validation
-
-- File size limit: 1MB maximum
-- JSON structure validation required
-- Malformed files rejected with alert
-- Error messages: "Import Failed: [specific reason]"
-
-### Input Sanitization
-
-**XSS Prevention**:
-- HTML special characters escaped before display
-- JSON rendering uses safe syntax highlighting
-- Textarea values treated as plain text
+---
 
 ## 🛠️ Troubleshooting
 
-### Voice Sample Not Locking
+### "VOICEPRINT LOCKED" not appearing
 
-**Symptom**: "VOICEPRINT LOCKED" status not appearing after paste
+**Issue**: Pasted 75+ words but status doesn't show
 
-**Causes**:
-- Sample contains fewer than 75 words
-- Wordcount calculated by whitespace splitting (may differ from visual count)
-- Check character count in bottom of browser or use external word counter
+**Solution:**
+- Verify word count (whitespace matters)
+- Add 5–10 more words to be safe
+- Try copying from different source (avoid PDFs)
 
-**Solution**:
-- Add more content to sample (minimum 80–100 words recommended)
-- Verify whitespace between words
-- Re-paste and monitor character limit
+### Settings disappear after refresh
 
-### Settings Not Saving
+**Issue**: Saved configuration lost
 
-**Symptom**: Refresh clears all configuration
+**Cause:** Browser storage disabled or private mode active
 
-**Causes**:
-- Browser localStorage disabled
-- Private/Incognito mode active
-- Storage quota exceeded
-- Browser cookies/storage cleared
+**Solution:**
+- Export configuration to file (backup)
+- Use non-private window
+- Check browser storage settings
 
-**Solution**:
-1. Check browser storage settings
-2. Export configuration to file for backup
-3. Try non-private window
-4. Import saved file on next session
+### Import fails
 
-### Import Fails with Invalid JSON Error
+**Issue**: "Invalid JSON file" error
 
-**Symptom**: "Import Failed: Invalid JSON file"
+**Solution:**
+- Ensure file ends in `. json`
+- File not corrupted or modified
+- Re-export from app and retry
 
-**Causes**:
-- Exported file corrupted or modified
-- File not actually JSON format
-- Text encoding issue (UTF-8 expected)
+### QA checks show red
 
-**Solution**:
-1.  Verify file name ends in `. json`
-2. Open in text editor to check format
-3. Re-export from application
-4. Try reimporting fresh export
+**Issue**: One or more quality checks failing
 
-### QA Checks Failing (Red LED)
+**Solution:**
+1. Select a Primary Function
+2. Add at least one Negative Constraint
+3. Select at least one Mandatory Section
+4. Click "GENERATE PROMPT" again
 
-**Symptom**: One or more QA indicators show "FIX"
+---
 
-**Possible Issues**:
-| QA Check | Solution |
-|----------|----------|
-| Tone Match failed | Select a Primary Function; regenerate prompt |
-| Guardrails failed | Select at least one negative constraint chip |
-| Structure failed | Select at least one Mandatory Section chip |
+## 💡 Use Cases
 
-**Steps**:
-1. Review left panel configuration
-2.  Ensure all mandatory sections and constraints selected
-3. Click "GENERATE PROMPT" again
-4. Verify LED turns green
+**Researchers & Analysts**
+- Define rigorous research protocols
+- Lock analytical tone
+- Enforce citation standards
 
-### Output Not Displaying
+**Content Creators**
+- Embed your writing style
+- Maintain brand voice
+- Scale without losing personality
 
-**Symptom**: Preview pane shows loading state or blank
+**Legal & Compliance**
+- Set strict evidence requirements
+- Define mandatory sections
+- Control risk posture
 
-**Causes**:
-- "GENERATE PROMPT" button not clicked
-- JavaScript error in browser console
-- Browser cache issue
+**Product & Design**
+- Brief AI on design philosophy
+- Lock vocabulary
+- Enforce specific output structure
 
-**Solution**:
-1. Click "GENERATE PROMPT" explicitly
-2. Check browser Developer Tools (F12) for errors
-3. Clear cache and reload page
-4. Try different browser
+**Founders & Executives**
+- Generate strategic docs
+- Maintain consistent voice
+- Rapid prototype ideas
+
+---
 
 ## 📄 License
 
-ApexSound Voice Engine with StyleTrace™ by BNDR is provided as-is for use by BNDR and authorized users. 
+ApexSound Voice Engine with StyleTrace™ by BNDR is provided as-is.
 
 ---
 
-## 📞 Support & Questions
+## 📞 Support
 
-For issues, questions, or feature requests, please refer to the GitHub Issues section or contact the repository maintainer.
+For issues, questions, or feature requests → [GitHub Issues](https://github.com/BNDRBOTS/apexsound-voice-engine/issues)
 
 ---
 
-**Last Updated**: November 30, 2025  
-**Version**: vX.3 APEX FORGE™  
-**Status**: Production Ready
+**Live Demo:** [Launch ApexSound](https://bndrbots.github.io/apexsound-voice-engine/)  
+**Version:** vX.3 APEX FORGE™  
+**Last Updated:** November 30, 2025
