@@ -2,7 +2,7 @@
 <html lang="en" class="antialiased">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ApexSound Voice Engine | StyleTrace™ by BNDR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -44,15 +44,16 @@
         }
         
         /* UNIFIED WET CONCRETE INPUTS - Compact h-9 */
+        /* Mobile: text-base (16px) stops iOS zoom. Desktop: text-sm (14px) for density. */
         .lux-input {
             background: #353838; 
             border: 2px solid #0a0a0a; 
             color: #FFFFFF; 
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            height: 2.25rem; /* h-9 equivalent */
+            height: 2.25rem; 
         }
         textarea.lux-input {
-            height: auto; /* allow textarea to grow */
+            height: auto; 
         }
         .lux-input:hover { border-color: #505050; }
         .lux-input:focus { border-color: #FFFFFF; outline: 2px solid #FFFFFF; outline-offset: 2px; } 
@@ -66,14 +67,14 @@
             background-size: 1.5em 1.5em;
         }
 
-        /* HIDDEN SCROLLBAR UTILITY - Scoped for left panel */
+        /* HIDDEN SCROLLBAR UTILITY */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* TACTICAL CHIP DESIGN */
         .chip {
             background: #353838; 
-            border: 2px solid #0a0a0a; /* Matched to input border width */
+            border: 2px solid #0a0a0a; 
             color: #E5E7EB;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             user-select: none;
@@ -117,7 +118,6 @@
         .json-boolean { color: #FBBF24; }
         .json-null { color: #94969D; }
         
-        /* Helper Text Style */
         .help-text {
             font-size: 10px;
             color: rgba(0, 0, 0, 0.6);
@@ -127,40 +127,37 @@
         }
     </style>
 </head>
-<body class="flex h-screen w-full flex-col overflow-hidden">
+<body class="flex min-h-screen md:h-screen w-full flex-col overflow-x-hidden md:overflow-hidden bg-sage">
 
-    <!-- HEADER: COMPACT h-14 -->
-    <header class="flex h-14 shrink-0 items-center justify-between border-b border-black/10 bg-sage px-6">
+    <header class="flex h-14 shrink-0 items-center justify-between border-b border-black/10 bg-sage px-4 md:px-6 sticky top-0 z-50 md:relative">
         <div class="flex items-center gap-3">
-            <div class="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-wetConcrete shadow-tactical">
+            <div class="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-wetConcrete shadow-tactical">
                 <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
             </div>
-            <div>
-                <h1 class="text-sm font-bold tracking-wide text-black">APEXSOUND VOICE ENGINE</h1>
-                <p class="text-[10px] font-bold tracking-wider text-darkCharcoal/70">with StyleTrace™ by BNDR</p>
+            <div class="leading-tight">
+                <h1 class="text-xs md:text-sm font-bold tracking-wide text-black">APEXSOUND</h1>
+                <p class="text-[9px] md:text-[10px] font-bold tracking-wider text-darkCharcoal/70 hidden sm:block">with StyleTrace™ by BNDR</p>
             </div>
         </div>
         <div class="flex gap-2">
-            <button id="resetBtn" class="tactical-btn rounded-md px-3 py-1.5 text-xs font-bold uppercase tracking-wider">Reset</button>
-            <button id="saveBtn" class="tactical-btn rounded-md px-3 py-1.5 text-xs font-bold uppercase tracking-wider">Save State</button>
+            <button id="resetBtn" class="tactical-btn rounded-md px-2 md:px-3 py-1.5 text-[10px] md:text-xs font-bold uppercase tracking-wider">Reset</button>
+            <button id="saveBtn" class="tactical-btn rounded-md px-2 md:px-3 py-1.5 text-[10px] md:text-xs font-bold uppercase tracking-wider">Save</button>
         </div>
     </header>
 
-    <main class="flex flex-1 overflow-hidden">
-        <!-- LEFT PANEL: Increased Width to 520px -->
-        <section class="flex w-[520px] shrink-0 flex-col border-r border-black/10 bg-sage p-5 overflow-y-auto no-scrollbar" aria-label="Configuration Panel">
-            
+    <main class="flex flex-1 flex-col md:flex-row overflow-y-auto md:overflow-hidden scroll-smooth">
+        
+        <section class="flex w-full md:w-[520px] shrink-0 flex-col border-b md:border-b-0 md:border-r border-black/10 bg-sage p-4 md:p-5 md:overflow-y-auto no-scrollbar" aria-label="Configuration Panel">
             <div class="flex-1 space-y-5"> 
                 
-                <!-- 1. MISSION -->
                 <div class="space-y-3"> 
                     <div class="flex items-center gap-2">
-                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white">1</span>
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white shrink-0">1</span>
                         <h2 class="text-xs font-bold uppercase tracking-wider text-black">Mission Parameters</h2>
                     </div>
                     <div class="group">
                         <label for="q1" class="mb-1 block text-xs font-bold text-black">Primary Function</label> 
-                        <select id="q1" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                        <select id="q1" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium">
                             <option value="research">Research & Intelligence</option>
                             <option value="design">Product Design</option>
                             <option value="legal">Legal & Compliance</option>
@@ -171,13 +168,13 @@
                     </div>
                     <div class="group">
                         <label for="q2" class="mb-1 block text-xs font-bold text-black">End User & Goal</label>
-                        <input id="q2" type="text" class="lux-input w-full rounded-lg px-3 text-sm font-medium" placeholder="e.g. Founders needing actionable strategy" />
+                        <input id="q2" type="text" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium" placeholder="e.g. Founders needing actionable strategy" />
                         <p class="help-text">Who is reading this, and what outcome do they need?</p>
                     </div>
                     
                     <div class="group">
                         <label for="q16" class="mb-1 block text-xs font-bold text-black">Logic Metaphor</label>
-                        <select id="q16" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                        <select id="q16" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium">
                             <option value="coach">Coach (Playbook/Drills)</option>
                             <option value="lab">Lab (Hypothesis/Tests)</option>
                             <option value="pit crew">Pit Crew (Systems/Speed)</option>
@@ -188,16 +185,15 @@
                     </div>
                 </div>
 
-                <!-- 2. CALIBRATION -->
                 <div class="space-y-3">
                     <div class="flex items-center gap-2">
-                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white">2</span>
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white shrink-0">2</span>
                         <h2 class="text-xs font-bold uppercase tracking-wider text-black">Model Calibration</h2>
                     </div>
-                    <div class="grid grid-cols-2 gap-4"> 
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> 
                         <div>
                             <label for="q3" class="mb-1 block text-xs font-bold text-black">Risk Profile</label>
-                            <select id="q3" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                            <select id="q3" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium">
                                 <option value="1" selected>Low (Conservative)</option>
                                 <option value="2">Moderate</option>
                                 <option value="3">High</option>
@@ -208,7 +204,7 @@
                         </div>
                         <div>
                             <label for="q4" class="mb-1 block text-xs font-bold text-black">Velocity</label>
-                            <select id="q4" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                            <select id="q4" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium">
                                 <option value="1">Fast</option>
                                 <option value="3">Balanced</option>
                                 <option value="5" selected>Deep</option>
@@ -216,10 +212,10 @@
                             <p class="help-text">Speed of delivery vs. depth of analysis.</p>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="q5" class="mb-1 block text-xs font-bold text-black">Cite Sources?</label>
-                            <select id="q5" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                            <select id="q5" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium">
                                 <option value="yes" selected>Yes (Mandatory)</option>
                                 <option value="no">No</option>
                             </select>
@@ -227,7 +223,7 @@
                         </div>
                         <div>
                             <label for="q7" class="mb-1 block text-xs font-bold text-black">Ambiguity Tolerance</label>
-                            <select id="q7" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                            <select id="q7" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium">
                                 <option value="1" selected>1 (Zero)</option>
                                 <option value="3">3 (Medium)</option>
                                 <option value="5">5 (High)</option>
@@ -237,16 +233,14 @@
                     </div>
                 </div>
 
-                <!-- 3. OUTPUT DNA -->
                 <div class="space-y-3">
                     <div class="flex items-center gap-2">
-                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white">3</span>
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white shrink-0">3</span>
                         <h2 class="text-xs font-bold uppercase tracking-wider text-black">Output DNA</h2>
                     </div>
                     <div>
                         <label class="mb-2 block text-xs font-bold text-black" id="negConstraintsLabel">Negative Constraints</label>
-                        <!-- UPDATED: justify-between added to ensure flush edges on top row -->
-                        <div class="flex w-full justify-between gap-2 mb-2" id="q20_chips" role="group" aria-labelledby="negConstraintsLabel">
+                        <div class="flex w-full flex-wrap gap-2 mb-2" id="q20_chips" role="group" aria-labelledby="negConstraintsLabel">
                             <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Hype</button>
                             <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Guarding</button>
                             <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Hedging</button>
@@ -254,22 +248,18 @@
                             <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Lectures</button>
                         </div>
                         
-                        <!-- CUSTOM INPUT + BOILERPLATE BUTTON ROW -->
-                        <div class="flex gap-2 w-full items-center">
-                            <!-- Custom Input (Grows) -->
-                            <input id="customNeg" type="text" class="lux-input flex-grow rounded-lg px-3 text-sm font-medium" placeholder="Add custom constraint (e.g. 'don't be lazy')..." />
-                            
-                            <!-- No AI Boilerplate Button (Fixed) - EXACT MATCH TO CHIPS ABOVE -->
-                            <button id="noBoilerplateBtn" class="chip rounded px-2.5 py-1.5 tracking-wide whitespace-nowrap" role="checkbox" aria-checked="false">No AI Boilerplate</button>
+                        <div class="flex flex-wrap sm:flex-nowrap gap-2 w-full items-center">
+                            <input id="customNeg" type="text" class="lux-input w-full sm:flex-grow rounded-lg px-3 text-base md:text-sm font-medium" placeholder="Add custom constraint..." />
+                            <button id="noBoilerplateBtn" class="chip rounded px-2.5 py-1.5 tracking-wide whitespace-nowrap w-full sm:w-auto h-9" role="checkbox" aria-checked="false">No AI Boilerplate</button>
                         </div>
                         
                         <input id="q20" type="hidden" value="" />
                         <p class="help-text">Select or add behaviors to strictly avoid.</p>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="q9" class="mb-1 block text-xs font-bold text-black">Tone</label>
-                            <select id="q9" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                            <select id="q9" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium">
                                 <option value="executive_brief" selected>Executive (Concise)</option>
                                 <option value="neutral">Neutral</option>
                                 <option value="blunt">Blunt</option>
@@ -284,12 +274,12 @@
                                 <option value="analytical_critical">Analytical + Critical</option>
                                 <option value="custom_tone">Custom (Type Your Own)</option>
                             </select>
-                            <input id="customToneInput" type="text" class="lux-input w-full rounded-lg px-3 text-sm font-medium mt-2 hidden" placeholder="Describe your custom tone..." />
+                            <input id="customToneInput" type="text" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium mt-2 hidden" placeholder="Describe your custom tone..." />
                             <p class="help-text">The personality and attitude of the response.</p>
                         </div>
                         <div>
                             <label for="q18" class="mb-1 block text-xs font-bold text-black">Optimal Length</label>
-                            <select id="q18" class="lux-input w-full rounded-lg px-3 text-sm font-medium">
+                            <select id="q18" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium">
                                 <option value="concise">Concise</option>
                                 <option value="standard" selected>Optimal</option>
                                 <option value="comprehensive">Deep Dive</option>
@@ -309,17 +299,14 @@
                     </div>
                 </div>
 
-                <!-- 4. APEXSOUND (Growable Area) -->
                 <div class="flex flex-1 flex-col min-h-0"> 
                     <div class="flex items-center gap-2 mb-1"> 
-                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white">4</span>
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white shrink-0">4</span>
                         <h2 class="text-xs font-bold uppercase tracking-wider text-black"><span class="italic">StyleTrace™</span> by BNDR</h2>
                     </div>
-                    
                     <p class="help-text mb-2 pl-7">paste at least 75+ words of your own, original writing</p>
-
                     <div class="group flex flex-1 flex-col min-h-0">
-                        <textarea id="voiceSample" class="lux-input w-full flex-grow rounded-lg px-3 py-2 text-sm placeholder-white/30 min-h-[100px] resize-none" placeholder="Paste your writing here. The system will analyze sentence vectors, punctuation density, and fragmentation to replicate your exact voice."></textarea>
+                        <textarea id="voiceSample" class="lux-input w-full flex-grow rounded-lg px-3 py-2 text-base md:text-sm placeholder-white/30 min-h-[120px] md:min-h-[100px] resize-none" placeholder="Paste your writing here. The system will analyze sentence vectors, punctuation density, and fragmentation to replicate your exact voice."></textarea>
                         <div id="styleStatus" class="mt-1 flex items-center gap-2 opacity-0 transition-opacity" aria-live="polite">
                             <div class="h-1.5 w-1.5 rounded-full bg-success animate-pulse"></div>
                             <span class="text-[10px] font-bold font-mono text-black">VOICEPRINT LOCKED</span>
@@ -328,7 +315,6 @@
                 </div>
             </div>
 
-            <!-- Hidden Inputs -->
             <div class="hidden">
                 <select id="q6"><option value="pick">Pick</option></select>
                 <select id="q8"><option value="yes">Yes</option></select>
@@ -337,34 +323,32 @@
                 <input type="file" id="importFile" class="hidden" accept=".json">
             </div>
 
-            <!-- GENERATE BUTTON -->
-            <button id="buildBtn" class="group relative flex items-center justify-center mt-4 shrink-0 w-full overflow-hidden rounded-lg px-4 py-5 text-sm font-bold tracking-wide shadow-tactical transition-all active:scale-[0.98]">
+            <button id="buildBtn" class="group relative flex items-center justify-center mt-4 shrink-0 w-full overflow-hidden rounded-lg px-4 py-4 md:py-5 text-sm font-bold tracking-wide shadow-tactical transition-all active:scale-[0.98]">
                 <span class="relative z-10">GENERATE PROMPT</span>
             </button>
         </section>
 
-        <!-- RIGHT PANEL (Preview) -->
-        <section class="relative flex flex-1 flex-col bg-wetConcrete overflow-hidden border-l border-black/20" aria-label="Live Preview Panel">
-            <div class="flex h-12 items-center justify-between border-b border-black/20 bg-black/20 px-6 backdrop-blur-md">
+        <section id="previewPanel" class="relative flex w-full md:flex-1 flex-col bg-wetConcrete overflow-hidden border-t md:border-t-0 md:border-l border-black/20 min-h-[50vh] md:min-h-0" aria-label="Live Preview Panel">
+            
+            <div class="flex h-12 items-center justify-between border-b border-black/20 bg-black/20 px-4 md:px-6 backdrop-blur-md">
                 <div class="flex items-center gap-2">
                     <div id="ledIndicator" class="h-2 w-2 rounded-full bg-neonGreen shadow-led-green animate-pulse" role="status" aria-label="System Status OK"></div>
                     <span class="text-[10px] font-bold uppercase tracking-widest text-picketFence">Live Preview</span>
                 </div>
                 <div class="flex gap-2">
-                    <!-- BUTTONS -->
                     <div class="flex h-7">
-                        <button id="viewJsonBtn" class="rounded-l-md bg-white/10 border border-black px-3 text-[10px] font-medium uppercase tracking-wider text-white transition-all hover:bg-white/20">JSON</button>
-                        <button id="viewNlpBtn" class="rounded-r-md bg-transparent border border-black border-l-0 px-3 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all">NLP</button>
+                        <button id="viewJsonBtn" class="rounded-l-md bg-white/10 border border-black px-2 md:px-3 text-[10px] font-medium uppercase tracking-wider text-white transition-all hover:bg-white/20">JSON</button>
+                        <button id="viewNlpBtn" class="rounded-r-md bg-transparent border border-black border-l-0 px-2 md:px-3 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all">NLP</button>
                     </div>
-                    <div class="w-px bg-white/10 mx-1"></div>
-                    <button id="copyBtn" class="tactical-btn h-7 rounded-md px-3 text-[10px] font-medium uppercase tracking-wider">Copy</button>
-                    <button id="importBtn" class="tactical-btn h-7 rounded-md px-3 text-[10px] font-medium uppercase tracking-wider">Import</button>
-                    <button id="downloadBtn" class="tactical-btn h-7 rounded-md px-3 text-[10px] font-medium uppercase tracking-wider">Export</button>
+                    <div class="w-px bg-white/10 mx-1 hidden sm:block"></div>
+                    <button id="copyBtn" class="tactical-btn h-7 rounded-md px-2 md:px-3 text-[10px] font-medium uppercase tracking-wider">Copy</button>
+                    <button id="importBtn" class="tactical-btn h-7 rounded-md px-2 md:px-3 text-[10px] font-medium uppercase tracking-wider hidden sm:block">Import</button>
+                    <button id="downloadBtn" class="tactical-btn h-7 rounded-md px-2 md:px-3 text-[10px] font-medium uppercase tracking-wider hidden sm:block">Export</button>
                 </div>
             </div>
 
-            <div id="result" class="flex-1 overflow-y-auto p-8 font-mono text-xs leading-relaxed text-picketFence prose max-w-none whitespace-pre-wrap break-words no-scrollbar" aria-live="polite">
-                <div class="flex h-full flex-col items-center justify-center gap-4 text-center opacity-50">
+            <div id="result" class="flex-1 overflow-y-auto p-4 md:p-8 font-mono text-xs leading-relaxed text-picketFence prose max-w-none whitespace-pre-wrap break-words no-scrollbar" aria-live="polite">
+                <div class="flex h-full flex-col items-center justify-center gap-4 text-center opacity-50 py-10">
                     <svg class="text-picketFence" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
                     <p class="text-picketFence">Awaiting Generation...</p>
                 </div>
@@ -373,16 +357,16 @@
             <textarea id="rawResultJson" class="hidden"></textarea>
             <textarea id="rawResultNlp" class="hidden"></textarea>
 
-            <div class="grid h-16 grid-cols-3 gap-px bg-black/20 border-t border-black/20 shrink-0">
-                <div class="group relative bg-wetConcrete p-3 px-6 hover:bg-white/5 transition-colors cursor-help">
+            <div class="grid h-auto md:h-16 grid-cols-1 sm:grid-cols-3 gap-px bg-black/20 border-t border-black/20 shrink-0">
+                <div class="group relative bg-wetConcrete p-2 md:p-3 px-4 md:px-6 hover:bg-white/5 transition-colors cursor-help border-b sm:border-b-0 border-white/5">
                     <h4 class="text-[10px] font-bold uppercase tracking-widest text-picketFence border-b border-dashed border-white/20 w-max">Tone Match</h4>
                     <div id="qaTone" class="mt-1 text-xs font-medium text-white">--</div>
                 </div>
-                <div class="group relative bg-wetConcrete p-3 px-6 hover:bg-white/5 transition-colors cursor-help">
+                <div class="group relative bg-wetConcrete p-2 md:p-3 px-4 md:px-6 hover:bg-white/5 transition-colors cursor-help border-b sm:border-b-0 border-white/5">
                     <h4 class="text-[10px] font-bold uppercase tracking-widest text-picketFence border-b border-dashed border-white/20 w-max">Guardrails</h4>
                     <div id="qaGuard" class="mt-1 text-xs font-medium text-white">--</div>
                 </div>
-                <div class="group relative bg-wetConcrete p-3 px-6 hover:bg-white/5 transition-colors cursor-help">
+                <div class="group relative bg-wetConcrete p-2 md:p-3 px-4 md:px-6 hover:bg-white/5 transition-colors cursor-help">
                     <h4 class="text-[10px] font-bold uppercase tracking-widest text-picketFence border-b border-dashed border-white/20 w-max">Structure Check</h4>
                     <div id="qaStruct" class="mt-1 text-xs font-medium text-white">--</div>
                 </div>
@@ -445,39 +429,41 @@ If conflicting tone is detected or output becomes ambiguous:
             }
         });
 
-        // NEW: Auto-Fix and Add Chip Logic
+        // NEW: Auto-Fix and Add Chip Logic (Prevent Duplicates)
         $('customNeg').addEventListener('change', function(e) {
             const raw = e.target.value.trim();
             if(!raw) return;
 
-            // Auto-Fix Logic: Convert to "No X"
             let fixed = raw;
             const lower = raw.toLowerCase();
             
             if (lower.startsWith("don't be ")) {
                 fixed = "No " + raw.substring(9);
             } else if (lower.startsWith("no ")) {
-                fixed = raw; // Already correct
+                fixed = raw;
             } else if (lower.startsWith("stop ")) {
                 fixed = "No " + raw.substring(5);
             } else if (!lower.startsWith("no ")) {
-                // Default prepend
                 fixed = "No " + raw;
             }
 
-            // Capitalize Words
             fixed = fixed.replace(/\b\w/g, l => l.toUpperCase());
 
-            // Create Chip
+            // Prevent duplicate chips
+            const existing = getChips('q20_chips');
+            if (existing.includes(fixed)) {
+                e.target.value = '';
+                return;
+            }
+
             const container = $('q20_chips');
             const btn = document.createElement('button');
-            btn.className = 'chip rounded px-2.5 py-1.5 tracking-wide active'; // Add as active by default
+            btn.className = 'chip rounded px-2.5 py-1.5 tracking-wide active';
             btn.textContent = fixed;
             btn.role = "checkbox";
             btn.setAttribute("aria-checked", "true");
             container.appendChild(btn);
 
-            // Clear Input
             e.target.value = '';
             updateHiddenInputs();
         });
@@ -486,14 +472,11 @@ If conflicting tone is detected or output becomes ambiguous:
         $('noBoilerplateBtn').addEventListener('click', function() {
             this.classList.toggle('active');
             this.setAttribute('aria-checked', this.classList.contains('active'));
-            // Note: This button acts as a standalone constraint or appended to chips list conceptually.
-            // For logic purposes, we can treat it as if it's part of the q20 logic or separate.
-            // If user wants it processed as a constraint, we ensure updateHiddenInputs captures it.
             updateHiddenInputs();
         });
 
         document.body.addEventListener('click', function(e) {
-            if (e.target.closest('.chip') && e.target.id !== 'noBoilerplateBtn') { // Exclude specific handler above if collision
+            if (e.target.closest('.chip') && e.target.id !== 'noBoilerplateBtn') { 
                 const chip = e.target.closest('.chip');
                 chip.classList.toggle('active');
                 chip.setAttribute('aria-checked', chip.classList.contains('active'));
@@ -502,7 +485,6 @@ If conflicting tone is detected or output becomes ambiguous:
         });
 
         function updateHiddenInputs() {
-            // Combine standard chips + No Boilerplate state
             let vals = getChips('q20_chips');
             const nbBtn = $('noBoilerplateBtn');
             if(nbBtn.classList.contains('active')) {
@@ -602,13 +584,16 @@ If conflicting tone is detected or output becomes ambiguous:
             remove: (key) => { try { localStorage.removeItem(key); } catch(e) { } }
         };
 
-        // UPDATED: loadSaved accepts optional external data for Import feature
+        // NEW: Validates import schema structure to prevent crashes
+        function isValidConfig(d) {
+            return d && typeof d === 'object' && 'q1' in d && 'voiceSample' in d;
+        }
+
         function loadSaved(externalData = null) {
             let d = null;
             if (externalData) {
-                // Added robust check for malformed imports
-                if (typeof externalData !== 'object' || externalData === null) {
-                    alert('Import Failed: Invalid JSON structure.');
+                if (!isValidConfig(externalData)) {
+                    alert('Import Failed: Invalid Configuration File.');
                     return;
                 }
                 d = externalData;
@@ -630,15 +615,12 @@ If conflicting tone is detected or output becomes ambiguous:
                 $('customToneInput').value = d.customToneInput;
                 $('customToneInput').classList.remove('hidden');
             } else {
-                // Reset custom if preset loaded
                 $('customToneInput').classList.add('hidden');
             }
 
-            // Logic Fix: Clear chips before appending to prevent duplication
+            // Restore Q19 Chips
             if(d.q19 && Array.isArray(d.q19)) {
                 const container = $('q19');
-                // Keep structure, reset classes. We assume basic buttons exist.
-                // For q19 they are static buttons, so we just reset active state.
                 const chips = container.querySelectorAll('.chip');
                 chips.forEach(c => {
                     c.classList.remove('active');
@@ -647,12 +629,12 @@ If conflicting tone is detected or output becomes ambiguous:
                 });
             }
             
+            // Restore Q20 Chips + Boilerplate
             if(d.q20 && typeof d.q20 === 'string') {
                 const arr = d.q20.split(', ');
                 const container = $('q20_chips');
                 const nbBtn = $('noBoilerplateBtn');
                 
-                // Reset static chips
                 const chips = container.querySelectorAll('.chip');
                 chips.forEach(c => {
                     c.classList.remove('active');
@@ -660,7 +642,6 @@ If conflicting tone is detected or output becomes ambiguous:
                     c.setAttribute('aria-checked', c.classList.contains('active'));
                 });
                 
-                // Handle No Boilerplate specially
                 if (arr.includes('No AI Boilerplate')) {
                     nbBtn.classList.add('active');
                     nbBtn.setAttribute('aria-checked', 'true');
@@ -684,7 +665,7 @@ If conflicting tone is detected or output becomes ambiguous:
                 q1: $('q1').value, q2: $('q2').value, q3: $('q3').value, q4: $('q4').value,
                 q5: $('q5').value, q6: $('q6').value, q7: $('q7').value, q8: $('q8').value,
                 q9: $('q9').value, q10: $('q10').value, 
-                customToneInput: $('customToneInput').value, // Collect custom tone
+                customToneInput: $('customToneInput').value,
                 q13: $('q13') ? $('q13').value : '', 
                 q14: $('q14') ? $('q14').value : '', 
                 q15: $('q15') ? $('q15').value : '',
@@ -726,7 +707,6 @@ If conflicting tone is detected or output becomes ambiguous:
                 'analytical_critical': 'Analytical+Critical (Logical/Dissecting)'
             };
             
-            // Handle Custom Tone
             if (a.q9 === 'custom_tone' && a.customToneInput && a.customToneInput.trim() !== "") {
                 dim.tone = `Custom Tone: ${a.customToneInput}`;
             } else {
@@ -753,7 +733,6 @@ If conflicting tone is detected or output becomes ambiguous:
                 styleProfile.authenticity_instruction = "Permit tasteful anti-polish for authenticity (Raw/Human).";
             }
 
-            const metaphorInstruction = getMetaphorHints()[a.q16] || "Standard professional vocabulary.";
             const paceNuance = getPaceNuance(d, a);
             
             const promptObject = {
@@ -860,23 +839,6 @@ ${antiPatterns}
 ${STYLESHELL_CONSTANTS.DO_NOT}`;
         }
 
-        function getVoiceMap() {
-            return { 
-                'executive_brief': 'Decisive, high-signal, executive', 
-                'creator_raw': 'Authentic, unpolished, human', 
-                'blunt': 'Brutally efficient, zero filler', 
-                'neutral': 'Objective, balanced',
-                'slick': 'Smooth, polished, persuasive',
-                'grungy': 'Raw, unvarnished, street-level',
-                'gen_z': 'Casual, trendy, internet-native',
-                'gen_x': 'Cynical, independent, no-nonsense',
-                'millennial': 'Earnest, collaborative, experienced',
-                'sharp_witty': 'Clever, incisive, humorous',
-                'best_friend': 'Supportive, informal, close',
-                'analytical_critical': 'Deeply logical, questioning, dissecting'
-            };
-        }
-        
         function getMetaphorHints() {
             return {
                 museum: "Use 'artifact/curation/heritage' vocabulary. Frame answers as exhibits.",
@@ -924,7 +886,6 @@ ${STYLESHELL_CONSTANTS.DO_NOT}`;
         }
 
         function syntaxHighlight(json) {
-            // Basic XSS prevention for JSON display
             if (typeof json != 'string') {
                 json = JSON.stringify(json, undefined, 2);
             }
@@ -940,7 +901,6 @@ ${STYLESHELL_CONSTANTS.DO_NOT}`;
 
         function build() {
             const btn = $('buildBtn');
-            // Visual feedback for generation
             btn.innerText = "GENERATING...";
             btn.disabled = true;
             
@@ -956,25 +916,43 @@ ${STYLESHELL_CONSTANTS.DO_NOT}`;
                 
                 btn.innerText = "GENERATE PROMPT";
                 btn.disabled = false;
-            }, 200); // Tiny simulated delay for UI feedback
+                
+                if (window.innerWidth < 768) {
+                    $('previewPanel').scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 200); 
+        }
+
+        // NEW: Abstracted button styling to keep renderOutput DRY
+        function updateViewToggles(mode) {
+            const btnJson = $('viewJsonBtn');
+            const btnNlp = $('viewNlpBtn');
+            
+            const activeClass = "rounded-l-md bg-white/10 border border-white/10 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white transition-all";
+            const inactiveClass = "rounded-r-md bg-transparent border border-white/10 border-l-0 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all";
+            
+            // Note: Classes are swapped slightly based on position (l-md vs r-md) so we handle specifically
+            if(mode === 'json') {
+                btnJson.className = "rounded-l-md bg-white/10 border border-white/10 px-2 md:px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white transition-all";
+                btnNlp.className = "rounded-r-md bg-transparent border border-white/10 border-l-0 px-2 md:px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all";
+            } else {
+                btnJson.className = "rounded-l-md bg-transparent border border-white/10 px-2 md:px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all";
+                btnNlp.className = "rounded-r-md bg-white/10 border border-white/10 border-l-0 px-2 md:px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white transition-all";
+            }
         }
 
         function renderOutput() {
             const resultEl = $('result');
-            const btnJson = $('viewJsonBtn');
-            const btnNlp = $('viewNlpBtn');
+            
+            updateViewToggles(currentMode);
+
             if (currentMode === 'json') {
                 const raw = $('rawResultJson').value;
                 resultEl.innerHTML = '<pre>' + syntaxHighlight(raw) + '</pre>';
-                btnJson.className = "rounded-l-md bg-white/10 border border-white/10 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white transition-all";
-                btnNlp.className = "rounded-r-md bg-transparent border border-white/10 border-l-0 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all";
             } else {
                 let raw = $('rawResultNlp').value;
-                // Basic XSS prevention for NLP display
                 raw = raw.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 resultEl.innerHTML = raw.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/### (.*)/g, '<h3 class="text-primary font-bold mt-4 mb-2 uppercase tracking-wider">$1</h3>');
-                btnNlp.className = "rounded-r-md bg-white/10 border border-white/10 border-l-0 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white transition-all";
-                btnJson.className = "rounded-l-md bg-transparent border border-white/10 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/5 transition-all";
             }
             resultEl.style.color = '#F0EFEB'; 
         }
@@ -989,7 +967,6 @@ ${STYLESHELL_CONSTANTS.DO_NOT}`;
             a.click();
         }
 
-        // IMPORT LOGIC
         $('importBtn').addEventListener('click', () => {
             $('importFile').click();
         });
@@ -998,7 +975,6 @@ ${STYLESHELL_CONSTANTS.DO_NOT}`;
             const file = e.target.files[0];
             if (!file) return;
             
-            // Security Polish: File Size Check (<1MB)
             if (file.size > 1024 * 1024) {
                 alert('Import Failed: File too large (>1MB).');
                 return;
@@ -1015,28 +991,23 @@ ${STYLESHELL_CONSTANTS.DO_NOT}`;
                 }
             };
             reader.readAsText(file);
-            // Reset value to allow re-importing same file if needed
             e.target.value = '';
         });
 
-        $('copyBtn').addEventListener('click', () => {
+        // NEW: Modern Async Clipboard API with visual feedback fallback
+        $('copyBtn').addEventListener('click', async () => {
             const rawText = currentMode === 'json' ? $('rawResultJson').value : $('rawResultNlp').value;
-            const textArea = document.createElement('textarea');
-            textArea.value = rawText;
-            textArea.style.position = 'fixed';
-            textArea.style.left = '-9999px';
-            textArea.style.top = '0';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
+            const btn = $('copyBtn');
+            const originalText = btn.innerText;
+
             try {
-                const successful = document.execCommand('copy');
-                const btn = $('copyBtn');
-                const originalText = btn.innerText;
-                btn.innerText = successful ? 'COPIED!' : 'ERROR';
-                setTimeout(() => btn.innerText = originalText, 2000);
-            } catch (err) {}
-            document.body.removeChild(textArea);
+                await navigator.clipboard.writeText(rawText);
+                btn.innerText = 'COPIED!';
+            } catch (err) {
+                console.error('Clipboard failed', err);
+                btn.innerText = 'ERROR';
+            }
+            setTimeout(() => btn.innerText = originalText, 2000);
         });
 
         $('buildBtn').addEventListener('click', build);
