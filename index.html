@@ -238,24 +238,28 @@
                         <span class="flex h-5 w-5 items-center justify-center rounded-full bg-wetConcrete text-[10px] font-bold text-white shrink-0">3</span>
                         <h2 class="text-xs font-bold uppercase tracking-wider text-black">Output DNA</h2>
                     </div>
+                    
                     <div>
                         <label class="mb-2 block text-xs font-bold text-black" id="negConstraintsLabel">Negative Constraints</label>
-                        <div class="flex w-full flex-wrap gap-2 mb-2" id="q20_chips" role="group" aria-labelledby="negConstraintsLabel">
-                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Hype</button>
-                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Guarding</button>
-                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Hedging</button>
-                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Padding</button>
-                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">No Lectures</button>
+                        
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-2" id="q20_chips" role="group" aria-labelledby="negConstraintsLabel">
+                            <button class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">No Hype</button>
+                            <button class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">No Guarding</button>
+                            <button class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">No Hedging</button>
+                            <button class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">No Padding</button>
+                            <button class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">No Lectures</button>
+                            
+                            <button id="noBoilerplateBtn" class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">No AI Boilerplate</button>
                         </div>
                         
-                        <div class="flex flex-wrap sm:flex-nowrap gap-2 w-full items-center">
-                            <input id="customNeg" type="text" class="lux-input w-full sm:flex-grow rounded-lg px-3 text-base md:text-sm font-medium" placeholder="Add custom constraint..." />
-                            <button id="noBoilerplateBtn" class="chip rounded px-2.5 py-1.5 tracking-wide whitespace-nowrap w-full sm:w-auto h-9" role="checkbox" aria-checked="false">No AI Boilerplate</button>
+                        <div class="flex w-full items-center">
+                            <input id="customNeg" type="text" class="lux-input w-full rounded-lg px-3 text-base md:text-sm font-medium" placeholder="Add custom constraint..." />
                         </div>
                         
                         <input id="q20" type="hidden" value="" />
                         <p class="help-text">Select or add behaviors to strictly avoid.</p>
                     </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="q9" class="mb-1 block text-xs font-bold text-black">Tone</label>
@@ -287,13 +291,14 @@
                             <p class="help-text">How much detail do you need?</p>
                         </div>
                     </div>
+
                     <div>
                         <label class="mb-2 block text-xs font-bold text-black" id="mandSectionsLabel">Mandatory Sections</label>
-                        <div class="flex flex-wrap gap-2" id="q19" role="group" aria-labelledby="mandSectionsLabel">
-                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">Assumptions</button>
-                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">Risks</button>
-                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">Alternatives</button>
-                            <button class="chip rounded px-2.5 py-1.5 tracking-wide" role="checkbox" aria-checked="false">Action Items</button>
+                        <div class="grid grid-cols-2 gap-2" id="q19" role="group" aria-labelledby="mandSectionsLabel">
+                            <button class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">Assumptions</button>
+                            <button class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">Risks</button>
+                            <button class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">Alternatives</button>
+                            <button class="chip h-9 w-full rounded px-2 tracking-wide text-[10px] md:text-[11px] font-medium transition-all active:scale-[0.98]" role="checkbox" aria-checked="false">Action Items</button>
                         </div>
                         <p class="help-text">Key elements required in every output.</p>
                     </div>
